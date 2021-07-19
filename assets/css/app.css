@@ -1,0 +1,54 @@
+body {
+    font-family: 'Nunito', sans-serif;
+    background: #f46b45;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #eea849, #f46b45);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #010057, #2a538f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+h1{
+    font-family: 'Fredoka One', sans-serif;
+    color: white;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 24px;
+    font-weight: normal;
+}
+
+h3{
+
+    color: white;
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.fa-plus {
+    float:right;
+}
+
+.axisWhite line{
+    stroke: white;
+  }
+  
+.axisWhite path{
+    stroke: white;
+  }
+  
+.axisWhite text{
+    fill: white;
+  }
+
+circle {
+    fill:rgb(255, 255, 255);
+    stroke: black;
+}
+
+
+
+#container {
+    background-color: #f7f7f7;
+    width: 360px;
+    margin: 100px auto;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}

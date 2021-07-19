@@ -2,9 +2,97 @@
 <html>
 <head>
 	<title>Home</title>
-
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="assets/css/app.css">
 </head>
-<body>
+<body onload='init()'>
+    <section class="container">
+			  <h1 class="display-1 text-center"><i class="fab fa-reddit-alien"></i>social stock</h1>
+			  <h3 class="text-center">How social media can influence financial markets </h3>   
+	</section>
+	<section>
+		<div class="row justify-content-md-center">
+			<svg id="chart" width=800 height = 800></svg>
+		</div>
+	</section>
 
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="https://d3js.org/d3.v7.min.js"></script>
+	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+	<script>
+	async function init(){
+	var width = 700;
+	var height = 700;
+	var margin = 50;
+	var padding = 10;
+	var parseDate = d3.timeParse("%m/%d/%Y %H:%M");
+	var rowConverter = function(d){
+		return { //remove this line
+			Date: parseDate(d.Date),
+			SubCount: parseInt(d.SubCount)
+		}
+	};
+	var dataset = await d3.csv('/assets/data/wsb_subs.csv', rowConverter);
+	/* dataset = dataset.forEach(function(d) {
+        d.date = parseDate(d.Date);
+        d.value = parseInt(d.SubCount);
+    }); */
+	console.log(dataset);
+	var x = d3.scaleTime()
+		.domain([
+			d3.min(dataset, function(d){ return d.Date; }),
+			d3.max(dataset, function(d){ return d.Date; })
+		])
+		.range([padding, width - padding]);
+	var y = d3.scaleLinear()
+		.domain([
+			0,
+			d3.max(dataset, function(d){ return d.SubCount; })
+		])
+		.range([height - padding, padding]);
+	console.log(x.domain());
+	console.log(d3.max(dataset));
+	console.log(y.domain())
+	var svg = d3.select("#chart")
+	.attr("width", width + 2*margin)
+	.attr("height", height + 2*margin);
+	d3.select("#chart").append("g")
+		.attr("transform","translate("+margin+","+margin+")")
+		.selectAll("circle").data(dataset).enter().append("circle")
+		.attr("cx", function (d,i) { return (x(d.Date)); })
+		.attr("cy", function(d,i) { return (y(d.SubCount)); })
+		.attr("r", function(d, i) { return (1); });
+	svg.append("g")
+		.attr("class", "axisWhite")
+		.attr("transform","translate("+margin+","+margin+")")
+		.call(d3.axisLeft(y));
+	svg.append("g")
+		.attr("class", "axisWhite")
+		.attr("transform","translate("+margin+","+(height+margin)+")")
+		.call(d3.axisBottom(x));
+	d3.select("#chart").selectAll("circle")
+      .on("mouseover", function(){
+          d3.select(this)
+            .style("fill", "orange");
+
+          // Get current event info
+          console.log(d3.event);
+          
+          // Get x & y co-ordinates
+          //console.log(d3.mouse(this));
+      })
+      .on("mouseout", function(){
+          d3.select(this)
+            .style("fill", "white")
+      });
+	};
+	</script>
+	
 </body>
 </html>
