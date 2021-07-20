@@ -1,5 +1,6 @@
 body {
     font-family: 'Nunito', sans-serif;
+    color: rgb(255, 255, 255);
     background: #f46b45;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #eea849, #f46b45);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #010057, #2a538f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -39,12 +40,29 @@ h3{
     fill: white;
   }
 
+.chartLine {
+    fill: none;
+    stroke: white;
+    stroke-width: 1.5;
+}
+
 circle {
     fill:rgb(255, 255, 255);
     stroke: black;
 }
 
-
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 100px;
+    height: 50px;
+    padding: 2px;
+    font: 14px;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+    }
 
 #container {
     background-color: #f7f7f7;

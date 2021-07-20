@@ -15,7 +15,7 @@
 	</section>
 	<section>
 		<div class="row justify-content-md-center">
-			<svg id="chart" width=800 height = 800></svg>
+			<svg id="chart" width=850 height = 850></svg>
 		</div>
 	</section>
 
@@ -27,23 +27,40 @@
 	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 	<script>
 	async function init(){
+	// set size attributes for svg
 	var width = 700;
 	var height = 700;
-	var margin = 50;
+	var margin = 75;
 	var padding = 10;
+	
+	var formatTime = d3.timeFormat("%d %b %Y");
+	var formatValues = d3.format(",");
 	var parseDate = d3.timeParse("%m/%d/%Y %H:%M");
+	var cutoffDate = startDate = new Date("2016-11-01");
+	// convert csv values to dates and integers
 	var rowConverter = function(d){
-		return { //remove this line
+		return {
 			Date: parseDate(d.Date),
 			SubCount: parseInt(d.SubCount)
 		}
 	};
+	// wait for dataset to load
 	var dataset = await d3.csv('/assets/data/wsb_subs.csv', rowConverter);
-	/* dataset = dataset.forEach(function(d) {
-        d.date = parseDate(d.Date);
-        d.value = parseInt(d.SubCount);
-    }); */
 	console.log(dataset);
+	
+	// defining the div for the tooltip
+	// source: https://bl.ocks.org/d3noob/a22c42db65eb00d4e369
+	var div = d3.select("body").append("div")	
+	.attr("class", "tooltip")				
+    .style("opacity", 0);
+
+	var keyDates = [];
+	keyDates.push(dataset[1118], dataset[1367], dataset[1458] );
+	console.log(keyDates);
+/* 	dataset = dataset.filter(function(d) {
+  		return d.date > cutoffDate;
+		}) */
+	// create scales for line charts
 	var x = d3.scaleTime()
 		.domain([
 			d3.min(dataset, function(d){ return d.Date; }),
@@ -56,18 +73,41 @@
 			d3.max(dataset, function(d){ return d.SubCount; })
 		])
 		.range([height - padding, padding]);
+	
 	console.log(x.domain());
 	console.log(d3.max(dataset));
 	console.log(y.domain())
+	console.log("keyDates[1] value is: ", keyDates[1])
+	// generate visualization
 	var svg = d3.select("#chart")
 	.attr("width", width + 2*margin)
 	.attr("height", height + 2*margin);
-	d3.select("#chart").append("g")
+	var wsb_line = d3.line()
+		.x(function(d) { return x(d.Date); })
+		.y(function(d) { return y(d.SubCount); });
+	svg.append("g")
 		.attr("transform","translate("+margin+","+margin+")")
-		.selectAll("circle").data(dataset).enter().append("circle")
+		.selectAll("circle").data(keyDates).enter().append("circle")
+		.attr("r", 10)
 		.attr("cx", function (d,i) { return (x(d.Date)); })
 		.attr("cy", function(d,i) { return (y(d.SubCount)); })
-		.attr("r", function(d, i) { return (1); });
+		.on("mouseover", function(e,d) {
+			console.log(d.SubCount); 		
+			div.transition()
+				.duration(200)
+				.style("opacity", .9);
+				div .html(formatTime(d.Date) + "<br/>" + formatValues(d.SubCount))
+				.style("left", (event.pageX + 20) + "px")
+				.style("top", (event.pageY) + "px");
+				})				
+        .on("mouseout", function(d,i) {		
+            div.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+        })
+
+//		.append("title")
+//		.text(function(d) { return "Number of subsrcibers: "  + d.SubCount});
 	svg.append("g")
 		.attr("class", "axisWhite")
 		.attr("transform","translate("+margin+","+margin+")")
@@ -75,22 +115,39 @@
 	svg.append("g")
 		.attr("class", "axisWhite")
 		.attr("transform","translate("+margin+","+(height+margin)+")")
-		.call(d3.axisBottom(x));
-	d3.select("#chart").selectAll("circle")
-      .on("mouseover", function(){
-          d3.select(this)
-            .style("fill", "orange");
+		.call(d3.axisBottom(x).ticks(d3.timeYear).tickFormat(d3.timeFormat("%Y")));
 
-          // Get current event info
-          console.log(d3.event);
-          
-          // Get x & y co-ordinates
-          //console.log(d3.mouse(this));
-      })
-      .on("mouseout", function(){
-          d3.select(this)
-            .style("fill", "white")
-      });
+	// add line to points
+	svg.append("path")
+		.datum(dataset) //.filter(function(d) {return d.SubCount > 100000}))
+		.attr("class", "chartLine")
+		.attr("d", wsb_line)
+		.attr("transform","translate("+margin+","+margin+")");
+		
+/* 	d3.select("#chart").selectAll("circle").data(keyDates)
+    	.on("mouseover", function(d){
+			d3.select(this)
+				.style("fill", "orange");
+
+			var xPos = parseFloat(d3.select(this).attr("cx"));
+			var yPos = parseFloat(d3.select(this).attr("cy"));
+			console.log(d)
+			svg.append("text")
+				.attr("id", "tooltip")
+				.attr("x", xPos)
+				.attr("y", yPos)
+				.attr("text-anchor", "middle")
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "11px")
+				.text(d.SubCount);
+        // Get current event info
+    	console.log(d3.event);  
+    		})
+		.on("mouseout", function(){
+			d3.select(this)
+				.style("fill", "white")
+			d3.select("#tooltip").remove();
+      }); */
 	};
 	</script>
 	
