@@ -55,7 +55,7 @@
 	var [wsbData, stockData] = await Promise.all([d3.csv('/assets/data/wsbSubs.csv', rowConverter), 
 		d3.csv('/assets/data/companyVals.csv')]
 		);
-	var wsbChartText = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex tempora dolor placeat odio cum id amet, cupiditate optio quaerat, expedita atque odit, accusantium doloremque ea doloribus natus corporis sequi soluta?<br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore at earum vel officiis ratione voluptatibus nesciunt quibusdam asperiores nisi eaque tempore, fuga deleniti? Dicta aut, et nihil cumque corrupti quos!";
+	var wsbChartText = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex tempora dolor placeat odio cum id amet, cupiditate optio quaerat, expedita atque odit, accusantium doloremque ea doloribus natus corporis sequi soluta?<br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore at earum vel officiis ratione voluptatibus nesciunt quibusdam asperiores nisi eaque tempore, fuga deleniti? Dicta aut, et nihil cumque corrupti quos!<img src='/assets/images/reddit_phone.png' class=\x22img-fluid\x22 alt=\x22Person Holding Phone\x22>";
 
 	console.log(stockData);
 	
@@ -97,11 +97,24 @@
 			.x(function(d) { return x(d.Date); })
 			.y(function(d) { return y(d.SubCount); });	
 		// add line to points
-		svg.append("path")
+		var chartPath = svg.append("path")
 			.datum(wsbData) //.filter(function(d) {return d.SubCount > 100000}))
 			.attr("class", "chartLine")
 			.attr("d", wsb_line)
 			.attr("transform","translate("+margin+","+margin+")");
+		// get the total length of the chart line	
+		var pathLength = chartPath.node().getTotalLength();
+		console.log(pathLength);
+		// set the transition values using the path length to draw the line
+		var transitionLength = 4000;
+		const transitionPath = d3.transition()
+			.ease(d3.easeSin)
+			.duration(transitionLength);
+		chartPath
+			.attr("stroke-dashoffset", pathLength)
+			.attr("stroke-dasharray", pathLength)
+			.transition(transitionPath)
+			.attr("stroke-dashoffset", 0);
 		// plot data points
 		svg.append("g")
 			.attr("transform","translate("+margin+","+margin+")")
@@ -126,7 +139,10 @@
 					.style("opacity", 0);
 				d3.select(this)
 					.style("fill", "white")	
-			})
+			}
+			)
+			.transition().delay(transitionLength).ease(d3.easeSin).duration(3000)
+			.style("opacity", 100);
 		// add axes and labels
 		svg.append("g")
 			.attr("class", "axisWhite")
@@ -151,8 +167,9 @@
 			.text("Year");
 		// generate paragraphs for chart
 		d3.select("#chart-text").append("p").html(wsbChartText)
-			.transition()		
-			.duration(1500)		
+			.transition()
+			.delay(transitionLength)		
+			.duration(3000)		
 			.style("opacity", 100);
 		};
 

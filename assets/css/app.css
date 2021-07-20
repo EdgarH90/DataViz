@@ -57,6 +57,7 @@ circle {
     fill:rgb(255, 255, 255);
     stroke: #010B40;
     stroke-width: 3;
+    opacity: 0;
 }
 
 div.tooltip {
@@ -89,3 +90,26 @@ div.tooltip {
 #chart-text p{
     opacity: 0;
 }
+
+
+/* Source: https://color.adobe.com/trends 
+Color Theme Swatches in Hex */
+.Graphic-Design-1-hex { color: #020F59; }
+.Graphic-Design-2-hex { color: #010B40; }
+.Graphic-Design-3-hex { color: #022859; }
+.Graphic-Design-4-hex { color: #42628C; }
+.Graphic-Design-5-hex { color: #F2EEEB; }
+
+/* Color Theme Swatches in RGBA */
+.Graphic-Design-1-rgba { color: rgba(1, 14, 89, 1); }
+.Graphic-Design-2-rgba { color: rgba(1, 10, 63, 1); }
+.Graphic-Design-3-rgba { color: rgba(1, 39, 89, 1); }
+.Graphic-Design-4-rgba { color: rgba(65, 98, 140, 1); }
+.Graphic-Design-5-rgba { color: rgba(242, 237, 234, 1); }
+
+/* Color Theme Swatches in HSLA */
+.Graphic-Design-1-hsla { color: hsla(230, 96, 17, 1); }
+.Graphic-Design-2-hsla { color: hsla(230, 96, 12, 1); }
+.Graphic-Design-3-hsla { color: hsla(213, 96, 17, 1); }
+.Graphic-Design-4-hsla { color: hsla(213, 36, 40, 1); }
+.Graphic-Design-5-hsla { color: hsla(22, 22, 93, 1); }
