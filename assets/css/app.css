@@ -1,14 +1,14 @@
 body {
     font-family: 'Nunito', sans-serif;
-    color: rgb(255, 255, 255);
-    background: #f46b45;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #eea849, #f46b45);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #010057, #2a538f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color:     #022859;
+    background: #F2EEEB;  /* fallback for old browsers */
+    /*background: -webkit-linear-gradient(to right, #eea849, #f46b45);  /* Chrome 10-25, Safari 5.1-6 */
+    /*background: linear-gradient(to right, #010057, #2a538f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 h1{
     font-family: 'Fredoka One', sans-serif;
-    color: white;
+    color: #020F59;
     margin: 0;
     padding: 10px 20px;
     font-size: 24px;
@@ -17,11 +17,15 @@ h1{
 
 h3{
 
-    color: white;
+    color: #020F59;
     margin: 0;
     padding: 10px 20px;
     font-size: 24px;
     font-weight: normal;
+}
+
+p{
+    margin-top: 75px;
 }
 
 .fa-plus {
@@ -29,26 +33,30 @@ h3{
 }
 
 .axisWhite line{
-    stroke: white;
+    stroke: #022859;
+    shape-rendering: crispEdges;
   }
   
 .axisWhite path{
-    stroke: white;
+    stroke: #022859;
+    stroke-width: 2;
   }
   
 .axisWhite text{
-    fill: white;
+    fill: #022859;
+    font-size: 14px;
   }
 
 .chartLine {
     fill: none;
-    stroke: white;
-    stroke-width: 1.5;
+    stroke: #022859;
+    stroke-width: 2;
 }
 
 circle {
     fill:rgb(255, 255, 255);
-    stroke: black;
+    stroke: #010B40;
+    stroke-width: 3;
 }
 
 div.tooltip {
@@ -64,9 +72,20 @@ div.tooltip {
     pointer-events: none;
     }
 
-#container {
-    background-color: #f7f7f7;
-    width: 360px;
-    margin: 100px auto;
+#pg1, #pg2, #pg3 {
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    background: #010B40;
+    margin: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    color: #F2EEEB;
+}
+
+#pg1:hover, #pg2:hover, #pg3:hover {
+    color: #42628C;
+}
+
+#chart-text p{
+    opacity: 0;
 }
