@@ -2,6 +2,8 @@ body {
     font-family: 'Nunito', sans-serif;
     color:     #022859;
     background: #F2EEEB;  /* fallback for old browsers */
+    /*background-image: url('/assets/images/reddit_phone.png');
+    background-size: cover; */
     /*background: -webkit-linear-gradient(to right, #eea849, #f46b45);  /* Chrome 10-25, Safari 5.1-6 */
     /*background: linear-gradient(to right, #010057, #2a538f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
@@ -74,8 +76,7 @@ div.tooltip {
     }
 
 #pg1, #pg2, #pg3 {
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
     background: #010B40;
     margin: 10px;
     margin-bottom: 20px;
@@ -83,13 +84,109 @@ div.tooltip {
     color: #F2EEEB;
 }
 
-#pg1:hover, #pg2:hover, #pg3:hover {
-    color: #42628C;
+#pg1 {
+    background-color: rgba(0, 0, 0, 0.9);
+    background-image: url('/assets/images/reddit_background.jpg');
+    background-size: cover;
+}
+
+#pg2 {
+    background-image: url('/assets/images/amc_background.jpg');
+    background-size: cover;
+}
+
+#pg3 {
+    background-image: url('/assets/images/crypto_background.jpg');
+    background-size: cover;
 }
 
 #chart-text p{
     opacity: 0;
 }
+
+a,
+a:hover,
+a:focus {
+    color: inherit;
+}
+
+.container-fluid,
+.container {
+    max-width: 1200px;
+}
+
+/* Card CSS source: https://codepen.io/mrsahar/pen/jRjmdL */
+.chart-card {
+    max-width: 400px;
+    background-color: #010B40;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
+    background-position: center;
+    overflow: hidden;
+    position: relative;
+    margin: 10px auto;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.chart-card img {
+    transition: all linear 0.25s;
+}
+
+.chart-card .chart-title {
+    position: absolute;
+    left: 15px;
+    bottom: 130px;
+    font-size: 24px;
+    color: #FFF;
+    text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+    transition: all linear 0.25s;
+}
+
+.chart-card .chart-links {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    color: #FFF;
+    transition: all linear 0.25s;
+}
+
+.chart-card .chart-text {
+    position: absolute;
+    bottom: 50px;
+    left: 15px;
+    padding: 5px;
+    color: #FFF;
+    font-size: 13px;
+    transition: all linear 0.25s;
+}
+
+.chart-card .chart-links .fa {
+    margin: 5px;
+}
+
+.chart-card img {
+    filter: opacity(.6);
+}
+
+.chart-card:hover img {
+    filter: grayscale(100%);
+    filter: blur(5px);
+    filter: opacity(.2);
+}
+
+.chart-card:hover .chart-title {
+    bottom: 110px;
+}
+
+.chart-card:hover .chart-text {
+    bottom: 60px;
+}
+
+/* .chart-card:hover .chart-links {
+    right: 40px;
+} */
+
 
 
 /* Source: https://color.adobe.com/trends 

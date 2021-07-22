@@ -10,14 +10,35 @@
 </head>
 <body onload='init()'>
     <section class="container">
-			  <h1 class="display-1 text-center"><i class="fab fa-reddit-alien"></i>social stock</h1>
-			  <h3 class="text-center">How social media can influence financial markets </h3>   
+		<h1 class="display-1 text-center"><i class="fab fa-reddit-alien"></i>social stock</h1>
+		<h3 class="text-center">How social media can influence financial markets </h3>   
 	</section>
 	<section class = "container">
 		<div class="row justify-content-md-center">
-			<div id= "pg1" class="col-sm rounded d-flex align-items-center justify-content-center">The Rise of WallStreetBets</div>
-			<div id= "pg2" class="col-sm rounded d-flex align-items-center justify-content-center">Meme Investing</div>
-			<div id= "pg3" class="col-sm rounded d-flex align-items-center justify-content-center">Crypto Mania</div>
+			<div class="col-md-4" >
+				<div class="chart-card"><img src="/assets/images/reddit_background.jpg" class="img img-responsive">
+					<div class="chart-title">The Rise of WallStreetBets</div>
+					<div class="chart-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+					</div>
+					<div class="chart-links"><a id= "button-one" href="#!" class="btn btn-outline-light">View</a></div>
+				</div>
+			</div>
+			<div class="col-md-4" >
+				<div class="chart-card"><img src="/assets/images/amc_background.jpg" class="img img-responsive">
+					<div class="chart-title">Meme Investing</div>
+					<div class="chart-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+					</div>
+					<div class="chart-links"><a id= "button-one" href="#!" class="btn btn-outline-light">View</a></div>
+				</div>
+			</div>
+			<div class="col-md-4" >
+				<div class="chart-card"><img src="/assets/images/crypto_background.jpg" class="img img-responsive">
+					<div class="chart-title">Crypto Mania</div>
+					<div class="chart-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+					</div>
+					<div class="chart-links"><a id= "button-one" href="#!" class="btn btn-outline-light">View</a></div>
+				</div>
+			</div>
 		</div>
 		<div class="row justify-content-md-center">
 			<div id = "chart-text" class = "col-md"></div>
@@ -52,9 +73,13 @@
 		};
 
 	// wait for datasets to load
+	// source: https://subredditstats.com/r/wallstreetbets
+	// source: https://www.kaggle.com/omermetinn/values-of-top-nasdaq-copanies-from-2010-to-2020?select=CompanyValues.csv
+	// source: https://www.kaggle.com/omermetinn/tweets-about-the-top-companies-from-2015-to-2020?select=Tweet.csv
 	var [wsbData, stockData] = await Promise.all([d3.csv('/assets/data/wsbSubs.csv', rowConverter), 
 		d3.csv('/assets/data/companyVals.csv')]
 		);
+	// source: https://unsplash.com/photos/nZc6W6C1l4g
 	var wsbChartText = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex tempora dolor placeat odio cum id amet, cupiditate optio quaerat, expedita atque odit, accusantium doloremque ea doloribus natus corporis sequi soluta?<br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore at earum vel officiis ratione voluptatibus nesciunt quibusdam asperiores nisi eaque tempore, fuga deleniti? Dicta aut, et nihil cumque corrupti quos!<img src='/assets/images/reddit_phone.png' class=\x22img-fluid\x22 alt=\x22Person Holding Phone\x22>";
 
 	console.log(stockData);
@@ -174,7 +199,7 @@
 		};
 
 	// generate first chart on click
-	d3.select("#pg1")
+	d3.select("#button-one")
 		.on("click", function(d) { 
 			var chartStatus = d3.select("#chart").selectAll("circle").empty() 
 			if (chartStatus) { return wsbViz();}
