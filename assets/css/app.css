@@ -100,7 +100,7 @@ div.tooltip {
     background-size: cover;
 }
 
-#chart-text p{
+#chartOnetext p{
     opacity: 0;
 }
 
@@ -154,7 +154,7 @@ a:focus {
 .chart-card .chart-text {
     position: absolute;
     bottom: 50px;
-    left: 15px;
+    left: 10px;
     padding: 5px;
     color: #FFF;
     font-size: 13px;

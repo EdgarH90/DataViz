@@ -28,7 +28,7 @@
 					<div class="chart-title">Meme Investing</div>
 					<div class="chart-text">Some quick example text to build on the card title and make up the bulk of the card's content.
 					</div>
-					<div class="chart-links"><a id= "button-one" href="#!" class="btn btn-outline-light">View</a></div>
+					<div class="chart-links"><a id= "button-two" href="#!" class="btn btn-outline-light">View</a></div>
 				</div>
 			</div>
 			<div class="col-md-4" >
@@ -36,12 +36,12 @@
 					<div class="chart-title">Crypto Mania</div>
 					<div class="chart-text">Some quick example text to build on the card title and make up the bulk of the card's content.
 					</div>
-					<div class="chart-links"><a id= "button-one" href="#!" class="btn btn-outline-light">View</a></div>
+					<div class="chart-links"><a id= "button-three" href="#!" class="btn btn-outline-light">View</a></div>
 				</div>
 			</div>
 		</div>
 		<div class="row justify-content-md-center">
-			<div id = "chart-text" class = "col-md"></div>
+			<div id = "chartOnetext" class = "col-md"></div>
 			<div class="col-md"><svg id="chart" width = 850 height = 850></svg></div>
 		</div>
 	</section>
@@ -77,7 +77,7 @@
 	// source: https://www.kaggle.com/omermetinn/values-of-top-nasdaq-copanies-from-2010-to-2020?select=CompanyValues.csv
 	// source: https://www.kaggle.com/omermetinn/tweets-about-the-top-companies-from-2015-to-2020?select=Tweet.csv
 	var [wsbData, stockData] = await Promise.all([d3.csv('/assets/data/wsbSubs.csv', rowConverter), 
-		d3.csv('/assets/data/companyVals.csv')]
+		d3.csv('/assets/data/stockData.csv')]
 		);
 	// source: https://unsplash.com/photos/nZc6W6C1l4g
 	var wsbChartText = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex tempora dolor placeat odio cum id amet, cupiditate optio quaerat, expedita atque odit, accusantium doloremque ea doloribus natus corporis sequi soluta?<br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore at earum vel officiis ratione voluptatibus nesciunt quibusdam asperiores nisi eaque tempore, fuga deleniti? Dicta aut, et nihil cumque corrupti quos!<img src='/assets/images/reddit_phone.png' class=\x22img-fluid\x22 alt=\x22Person Holding Phone\x22>";
@@ -129,7 +129,6 @@
 			.attr("transform","translate("+margin+","+margin+")");
 		// get the total length of the chart line	
 		var pathLength = chartPath.node().getTotalLength();
-		console.log(pathLength);
 		// set the transition values using the path length to draw the line
 		var transitionLength = 4000;
 		const transitionPath = d3.transition()
@@ -191,7 +190,7 @@
 			.style("text-anchor", "middle")
 			.text("Year");
 		// generate paragraphs for chart
-		d3.select("#chart-text").append("p").html(wsbChartText)
+		d3.select("#chartOnetext").append("p").html(wsbChartText)
 			.transition()
 			.delay(transitionLength)		
 			.duration(3000)		
@@ -199,14 +198,22 @@
 		};
 
 	// generate first chart on click
-	d3.select("#button-one")
-		.on("click", function(d) { 
-			var chartStatus = d3.select("#chart").selectAll("circle").empty() 
-			if (chartStatus) { return wsbViz();}
-			else {
-				d3.select("#chart").selectAll('*').remove();
-				d3.select("#chart-text").selectAll('*').remove();
-			};
+	d3.selectAll("#button-one, #button-two, #button-three")
+		.on("click", function(d) {
+			console.log(this.id);
+			var chartOneStatus = d3.select("#chart").selectAll("circle").empty(); 
+			var chartTwoStatus = d3.select("#chart").selectAll("circle").empty();
+			var chartThreeStatus = d3.select("#chart").selectAll("circle").empty();
+			d3.select("#chart").selectAll('*').remove();
+			d3.select("#chartOnetext").selectAll('*').remove(); 
+				switch(this.id){
+					case "button-one":
+						return wsbViz();
+					case "button-two":
+						return wsbViz();
+					case "button-three":
+						return wsbViz();
+			}  
 		});
 	};
 	</script>
