@@ -49,10 +49,23 @@ p{
     font-size: 14px;
   }
 
-.chartLine {
+.chartOneLine {
     fill: none;
-    stroke: #022859;
     stroke-width: 2;
+}
+
+.chartTwoLine {
+    fill: none;
+    stroke-width: 1.5;
+}
+
+.legend text{
+    fill:  black;
+}
+
+.legend circle {
+    stroke-width: 1;
+    opacity: 100;
 }
 
 circle {

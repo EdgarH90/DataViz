@@ -19,7 +19,7 @@ def getStockData(ticker):
         # get column with closing price of ticker
         data = pd.DataFrame({f'{item}': stock[0].iloc[:,3]})
         data = data.sort_index()
-        data = data.loc['2017-01-01':'2021-02-01']
+        data = data.loc['2017-01-01':'2021-05-01']
         print(data.head)
         # add to data frame
         if (df.empty):
@@ -31,5 +31,11 @@ def getStockData(ticker):
     print(df.head())
 
 tickers = ['AMC', 'GME', 'BB', 'PLTR', 'SPCE']
-
 getStockData(tickers)
+df = pd.read_csv('stockData.csv')
+
+print(df.head())
+stacked = df.melt(id_vars=['date'], var_name = "stock" , value_name = "Value")
+print("Melted: \n")
+print(stacked[0:10])
+stacked.to_csv('stockData.csv')
