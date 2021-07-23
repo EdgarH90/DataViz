@@ -64,7 +64,7 @@
 	var parseDate = d3.timeParse("%m/%d/%Y %H:%M");
 	var parseDateAlt = d3.timeParse("%m/%d/%Y");
 	var cutoffDate = new Date("2016-11-01");
-
+	var transitionLength = 4000;
 	// convert csv values to dates and integers
 	var rowConverter = function(d){
 		//console.log("This data contains: " + Object.keys(d)[1]);
@@ -90,7 +90,9 @@
 		d3.csv('/assets/data/stockData.csv', rowConverter)]
 		);
 	// source: https://unsplash.com/photos/nZc6W6C1l4g
-	var wsbChartText = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex tempora dolor placeat odio cum id amet, cupiditate optio quaerat, expedita atque odit, accusantium doloremque ea doloribus natus corporis sequi soluta?<br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore at earum vel officiis ratione voluptatibus nesciunt quibusdam asperiores nisi eaque tempore, fuga deleniti? Dicta aut, et nihil cumque corrupti quos!<img src='/assets/images/reddit_phone.png' class=\x22img-fluid\x22 alt=\x22Person Holding Phone\x22>";
+	var wsbChartText = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex tempora dolor placeat odio cum id amet, cupiditate optio quaerat, expedita atque odit, accusantium doloremque ea doloribus natus corporis sequi soluta?<br>Lorem ipsum dolor sit amet!<img src='/assets/images/reddit_phone.png' class=\x22img-fluid\x22 alt=\x22Person Holding Phone\x22>";
+
+	var stockChartText = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex tempora dolor placeat odio cum id amet, cupiditate optio quaerat, expedita atque odit, accusantium doloremque ea doloribus natus corporis sequi soluta?<br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore at earum vel officiis ratione voluptatibus nesciunt quibusdam asperiores nisi eaque tempore, fuga deleniti? Dicta aut, et nihil cumque corrupti quos!";
 
 	console.log(stockData);
 	
@@ -163,6 +165,16 @@
 					(d[1])
 				;})
 			.attr("transform","translate("+margin+","+margin+")")
+		var pathLength = chartTwoPath.node().getTotalLength();
+		// set the transition values using the path length to draw the line
+		const transitionPath = d3.transition()
+			.ease(d3.easeSin)
+			.duration(transitionLength);
+		chartTwoPath.each(function(d) { d.TotalLength = this.getTotalLength(); })
+			.attr("stroke-dashoffset", function(d) { return d.TotalLength; })
+			.attr("stroke-dasharray", function(d) { return d.TotalLength; })
+			.transition(transitionPath)
+			.attr("stroke-dashoffset", 0);
 		// add axes and labels
 		svg.append("g")
 			.attr("class", "axisWhite")
@@ -193,17 +205,21 @@
 			.enter()
 			.append("g")
 			.attr("class", "legend");
-
 		legend.append("circle")
 			.attr("cx", 100)
 			.attr('cy', (d, i) => i * 30 + 155)
 			.attr("r", 6)
 			.style("fill", (d,i) => color(d[0]))
-
 		legend.append("text")
 			.attr("x", 110)
 			.attr("y", (d, i) => i * 30 + 161)
 			.text((d,i) => res[i]);
+		// generate paragraphs for chart
+		d3.select("#chartOnetext").append("p").html(stockChartText)
+			.transition()
+			.delay(transitionLength)		
+			.duration(3000)		
+			.style("opacity", 100);
 	}
 	// generate visualization
 	var wsbViz = function(d){
@@ -223,7 +239,6 @@
 		// get the total length of the chart line	
 		var pathLength = chartPath.node().getTotalLength();
 		// set the transition values using the path length to draw the line
-		var transitionLength = 4000;
 		const transitionPath = d3.transition()
 			.ease(d3.easeSin)
 			.duration(transitionLength);
