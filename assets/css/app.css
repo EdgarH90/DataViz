@@ -61,11 +61,12 @@ p{
 
 .legend text{
     fill:  black;
+    opacity: 0;
 }
 
 .legend circle {
     stroke-width: 1;
-    opacity: 100;
+    opacity: 0;
 }
 
 circle {
