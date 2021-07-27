@@ -83,7 +83,8 @@ div.tooltip {
     height: 50px;
     padding: 2px;
     font: 14px;
-    background: lightsteelblue;
+    color: #F2EEEB;
+    background: #010B40;
     border: 0px;
     border-radius: 8px;
     pointer-events: none;
@@ -132,6 +133,7 @@ a:focus {
 /* Card CSS source: https://codepen.io/mrsahar/pen/jRjmdL */
 .chart-card {
     max-width: 400px;
+    max-height: 200px;
     background-color: #010B40;
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.1);
     background-position: center;
@@ -197,10 +199,20 @@ a:focus {
     bottom: 60px;
 }
 
-/* .chart-card:hover .chart-links {
-    right: 40px;
-} */
+.annotation {
+    opacity: 0;
+  }
 
+.annotation path {
+    stroke: #010B40;
+    fill: none;
+  }
+
+.annotation path.connector-arrow, 
+.title text, .annotation text,
+.annotation.callout.circle .annotation-subject path{
+    fill: #022859;
+  }
 
 
 /* Source: https://color.adobe.com/trends 

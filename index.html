@@ -10,8 +10,8 @@
 </head>
 <body onload='init()'>
     <section class="container">
-		<h1 class="display-1 text-center"><i class="fab fa-reddit-alien"></i>social stock</h1>
-		<h3 class="text-center">How social media can influence financial markets </h3>   
+		<h1 class="display-2 text-center"><i class="fab fa-reddit-alien"></i>social stock</h1>
+		<h4 class="text-center">How social media can influence financial markets </h3>   
 	</section>
 	<section class = "container">
 		<div class="row justify-content-md-center">
@@ -49,6 +49,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script src="https://d3js.org/d3.v7.min.js"></script>
+	<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
 	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 	<script>
 	async function init(){
@@ -61,7 +62,7 @@
 	var formatTime = d3.timeFormat("%d %b %Y");
 	var formatValues = d3.format(",");
 	var formatAxisValues = d3.format(".2s");
-	var formatDollarValues = d3.format("$.2f");
+	var formatDollarValues = d3.format("$.3f");
 	var parseDate = d3.timeParse("%m/%d/%Y %H:%M");
 	var parseDateAlt = d3.timeParse("%m/%d/%Y");
 	var cutoffDate = new Date("2016-11-01");
@@ -99,30 +100,6 @@
 	
 	// defining the div for the tooltip
 	// source: https://bl.ocks.org/d3noob/a22c42db65eb00d4e369
-	var div = d3.select("body").append("div")	
-	.attr("class", "tooltip")				
-    .style("opacity", 0);
-
-	// define variable for important dates
-	var keyDates = [];
-	var keyStockValues = [];
-	keyDates.push(wsbData[1118], wsbData[1367], wsbData[1458] );
-	console.log(keyDates);
-
-	// create scales for line charts
-
-	var x = d3.scaleTime()
-		.domain([
-			d3.min(wsbData, function(d){ return d.Date; }),
-			d3.max(wsbData, function(d){ return d.Date; })
-		])
-		.range([padding, width - padding]);
-	var y = d3.scaleLinear()
-		.domain([
-			0,
-			d3.max(wsbData, function(d){ return d.SubCount; })
-		])
-		.range([height - padding, padding]);
 
 	function createViz(dataset){
 		// define the x and y scales
@@ -133,15 +110,19 @@
 			.domain([d3.min(dataset, d => +d.Value), d3.max(dataset, d => +d.Value)])
 			.range([height - padding, padding]);
 		console.log(yS.domain());
+		var div = d3.select("body").append("div")	
+		.attr("class", "tooltip")				
+    	.style("opacity", 0);
 		// generate the visualization
 		var assetViz = function(d){
 			// define the ticks for the y axis
 			var chartTicks = function(d){
 				if (dataset[0].Asset == "AMC") { return [2, 5, 10, 50, 100, 350 ];}
-				else { return [.0001, .01, .05, .25, .5, 1.5];}
+				else { return [.00165, .01, .05, .25, .5, 1.5];}
 				}
 			// references: https://github.com/d3/d3-array/blob/main/README.md#group
 			// https://observablehq.com/@bjedwards/multi-line-chart-d3-v6
+			// https://www.goodmarketing.club/guide/d3-js-multiple-lines-chart-w-line-by-line-code-explanations/
 			var sumstat = d3.group(dataset, d => d.Asset);
 			var res = Array.from(sumstat.keys()); // list of group names
 			console.log("Names: " + res);
@@ -189,7 +170,7 @@
 					))
 				.append("text")
 				.attr("transform", "rotate(-90)")
-				.attr("y",0- margin + 10)
+				.attr("y",0- margin + 5)
 				.attr("x",0 - (height / 2))
 				.attr("dy", "1em")
 				.style("text-anchor", "middle")
@@ -236,6 +217,26 @@
 		return assetViz();
 		};
 
+
+	// define variable for important dates
+	var keyDates = [];
+	var keyStockValues = [];
+	keyDates.push(wsbData[1118], wsbData[1367], wsbData[1458] );
+	console.log(keyDates);
+
+	// create scales for line charts
+	var x = d3.scaleTime()
+		.domain([
+			d3.min(wsbData, function(d){ return d.Date; }),
+			d3.max(wsbData, function(d){ return d.Date; })
+		])
+		.range([padding, width - padding]);
+	var y = d3.scaleLinear()
+		.domain([
+			0,
+			d3.max(wsbData, function(d){ return d.SubCount; })
+		])
+		.range([height - padding, padding]);
 	// generate visualization
 	var wsbViz = function(d){
 		var svg = d3.select("#chart")
@@ -269,25 +270,6 @@
 			.attr("r", 10)
 			.attr("cx", function (d,i) { return (x(d.Date)); })
 			.attr("cy", function(d,i) { return (y(d.SubCount)); })
-			.on("mouseover", function(e,d) {
-				console.log(d.SubCount); 		
-				div.transition()
-					.duration(200)
-					.style("opacity", .9);
-				div .html(formatTime(d.Date) + "<br/>" + formatValues(d.SubCount))
-					.style("left", (event.pageX + 20) + "px")
-					.style("top", (event.pageY) + "px");
-				d3.select(this)
-					.style("fill", "orange");
-					})				
-			.on("mouseout", function(d,i) {		
-				div.transition()		
-					.duration(500)		
-					.style("opacity", 0);
-				d3.select(this)
-					.style("fill", "white")	
-			}
-			)
 			.transition().delay(transitionLength).ease(d3.easeSin).duration(3000)
 			.style("opacity", 100);
 		// add axes and labels
@@ -318,7 +300,49 @@
 			.delay(transitionLength)		
 			.duration(3000)		
 			.style("opacity", 100);
-		};
+		const labels = [
+        {
+          data: {date: "3/16/2020",	value: 1018911, detail: "The subreddit starts to gain mainstream attention."},
+          dy: -10,
+          dx: -80,	
+        },
+        {
+          data: {date: "1/27/2021",	value: 4949083, detail: "By early 2021, membership had grown dramatically."},
+          dy: 15,
+          dx: -70,
+        },
+        {
+          data: {date: "5/2/2021",	value: 10004973, detail: "WSB crosses the 10 million member mark."},
+          dy: 10,
+          dx: -50,
+        }
+		].map(l => {
+			l.note = Object.assign({}, l.note, { title: `Date: ${l.data.date} Members: ${formatValues(l.data.value)}`, label: `${l.data.detail}`
+			})
+			l.subject = { radius: 10}
+
+			return l;
+		})
+
+		// Add annotation to the chart
+		const makeAnnotations = d3.annotation()
+		.annotations(labels).type(d3.annotationCalloutCircle)
+		.accessors({ x: d => x(parseDateAlt(d.date)), 
+          y: d => y(d.value)
+        })
+        .accessorsInverse({
+          date: d => timeFormat(x.invert(d.x)),
+          value: d => y.invert(d.y) 
+        });
+		svg
+		.append("g")
+		.attr("transform","translate("+margin+","+margin+")")
+		.attr("class", "annotation-group")
+		.call(makeAnnotations);
+		d3.selectAll('.annotation')
+		.transition().delay(transitionLength).ease(d3.easeSin).duration(3000)
+		.style("opacity", 100);
+	};
 
 	// generate first chart on click
 	d3.selectAll("#button-one, #button-two, #button-three")
