@@ -109,17 +109,17 @@ div.tooltip {
 
 #pg1 {
     background-color: rgba(0, 0, 0, 0.9);
-    background-image: url('/assets/images/reddit_background.jpg');
+    background-image: url('./assets/images/reddit_background.jpg');
     background-size: cover;
 }
 
 #pg2 {
-    background-image: url('/assets/images/amc_background.jpg');
+    background-image: url('./assets/images/amc_background.jpg');
     background-size: cover;
 }
 
 #pg3 {
-    background-image: url('/assets/images/crypto_background.jpg');
+    background-image: url('./assets/images/crypto_background.jpg');
     background-size: cover;
 }
 

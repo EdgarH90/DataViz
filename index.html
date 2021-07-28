@@ -88,17 +88,17 @@
 	// wait for datasets to load
 	// source: https://subredditstats.com/r/wallstreetbets
 	// source: https://www.kaggle.com/omermetinn/tweets-about-the-top-companies-from-2015-to-2020?select=Tweet.csv
-	var [wsbData, stockData, cryptoData] = await Promise.all([d3.csv('/assets/data/wsbSubs.csv', rowConverter), 
-		d3.csv('/assets/data/stockData.csv', rowConverter), d3.csv('/assets/data/cryptoData.csv', rowConverter)]
+	var [wsbData, stockData, cryptoData] = await Promise.all([d3.csv('./assets/data/wsbSubs.csv', rowConverter), 
+		d3.csv('./assets/data/stockData.csv', rowConverter), d3.csv('./assets/data/cryptoData.csv', rowConverter)]
 		);
 	// source: https://unsplash.com/photos/nZc6W6C1l4g
 	// reference: https://bunewsservice.com/social-stock-how-social-media-and-influencers-affect-financial-markets/
 	// source: https://www.coindesk.com/wallstreetbets-reddit-group
-	var wsbChartText = "The group “r/Wallstreetbets” (aka WSB) is a longstanding subreddit channel where over 3.5 million Reddit users discuss highly speculative trading ideas and strategies. Described as “like 4chan found a Bloomberg Terminal,” the community has caused huge disruption to financial markets.<br>Given that it’s on Reddit, it is accompanied by traditional Reddit-house style, which often includes profanity, irony, and a tremendous dose of memes.<br><img src='/assets/images/wsblogo.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22>";
+	var wsbChartText = "The group “r/Wallstreetbets” (aka WSB) is a longstanding subreddit channel where over 3.5 million Reddit users discuss highly speculative trading ideas and strategies. Described as “like 4chan found a Bloomberg Terminal,” the community has caused huge disruption to financial markets.<br>Given that it’s on Reddit, it is accompanied by traditional Reddit-house style, which often includes profanity, irony, and a tremendous dose of memes.<br><img src='./assets/images/wsblogo.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22>";
 	// source: https://www.forbes.com/sites/roomykhan/2021/03/08/social-media-fueled-stock-market-trading-the-unsuspecting-need-to-be-protected/?sh=6abaf9d027dd
 	var stockChartText = "<blockquote class=\x22blockquote\x22><p class=\x22mb-0\x22>The January 2021 surge in out of favor stocks like GameStop, AMC, Blackberry, Bed Bath & Beyond, etc., was triggered by a herd of retail traders mobilized via voluminous posts on social media Reddit subforum called r/WallStreetBets(WSB). According to Bloomberg, 50 meme stocks added $276 billion in value from the end of 2020 to the mania height. However, in just a matter of days, $167 billion had been wiped out. After the hysteria ended, it is unclear how the gain and loss fallout got distributed amongst the trading community.</p><br><footer class=\x22blockquote-footer\x22>Roomy Khan from <cite title=\x22Source Title\x22>Forbes.com</cite></footer></blockquote>";
 	
-	var cryptoText = "<blockquote class=\x22blockquote\x22><p class=\x22mb-0\x22>Elon Musk becomes a rallying point for DOGE and Altcoin holders on sites like Reddit and Twitter. His appearance on “SNL” was hotly anticipated moment inside and outside crypto markets, which had largely been centered on bitcoin and Ethereum, the two largest cryptos in the world.</p><br><footer class=\x22blockquote-footer\x22><cite title=\x22Source Title\x22>MarketWatch.com</cite></footer><br><img src='/assets/images/musktweet.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22></blockquote>";
+	var cryptoText = "<blockquote class=\x22blockquote\x22><p class=\x22mb-0\x22>Elon Musk becomes a rallying point for DOGE and Altcoin holders on sites like Reddit and Twitter. His appearance on “SNL” was hotly anticipated moment inside and outside crypto markets, which had largely been centered on bitcoin and Ethereum, the two largest cryptos in the world.</p><br><footer class=\x22blockquote-footer\x22><cite title=\x22Source Title\x22>MarketWatch.com</cite></footer><br><img src='./assets/images/musktweet.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22></blockquote>";
 	
 	// defining the div for the tooltip
 	// source: https://bl.ocks.org/d3noob/a22c42db65eb00d4e369
