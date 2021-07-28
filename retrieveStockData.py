@@ -21,7 +21,7 @@ def getAssetData(ticker, isEquity = True):
             # get column with closing price of ticker
             data = pd.DataFrame({f'{item}': stock[0].iloc[:,3]})
             data = data.sort_index()
-            data = data.loc['2017-01-01':'2021-05-01']
+            data = data.loc['2017-01-01':'2021-07-01']
             print(data.head)
             # add to data frame
             if (df.empty):
@@ -48,15 +48,15 @@ def getAssetData(ticker, isEquity = True):
 
 cryptos = ['ADA', 'DOGE', 'XRP']
 
-getAssetData(cryptos, False)
+#getAssetData(cryptos, False)
 
-""" tickers = ['AMC', 'GME', 'BB', 'PLTR', 'SPCE']
-getAssetData(tickers)"""
+#tickers = ['AMC', 'GME', 'BB', 'PLTR', 'SPCE']
+#getAssetData(tickers)
 
-df = pd.read_csv('cryptoData.csv')
+df = pd.read_csv('stockData.csv')
 
 print(df.head())
-stacked = df.melt(id_vars=['date'], var_name = "Coin" , value_name = "Value")
+stacked = df.melt(id_vars=['date'], var_name = "Asset" , value_name = "Value")
 print("Melted: \n")
 print(stacked[0:10])
-stacked.to_csv('cryptoData.csv')
+stacked.to_csv('stockData.csv')

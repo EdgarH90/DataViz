@@ -17,31 +17,31 @@
 		<div class="row justify-content-md-center">
 			<div class="col-md-4" >
 				<div class="chart-card"><img src="/assets/images/reddit_background.jpg" class="img img-responsive">
-					<div class="chart-title">The Rise of WallStreetBets</div>
-					<div class="chart-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+					<div class="chart-title">1. The Rise of WallStreetBets</div>
+					<div class="chart-text">Retail investors attempt to coordinate on Reddit to drive up the share price of struggling companies.
 					</div>
 					<div class="chart-links"><a id= "button-one" href="#!" class="btn btn-outline-light">View</a></div>
 				</div>
 			</div>
 			<div class="col-md-4" >
 				<div class="chart-card"><img src="/assets/images/amc_background.jpg" class="img img-responsive">
-					<div class="chart-title">Meme Investing</div>
-					<div class="chart-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+					<div class="chart-title">2. Meme Investing</div>
+					<div class="chart-text">With millions of individuals confined at home, the COVID-19 pandemic amplified the retail trading surge.
 					</div>
 					<div class="chart-links"><a id= "button-two" href="#!" class="btn btn-outline-light">View</a></div>
 				</div>
 			</div>
 			<div class="col-md-4" >
 				<div class="chart-card"><img src="/assets/images/crypto_background.jpg" class="img img-responsive">
-					<div class="chart-title">Crypto Mania</div>
-					<div class="chart-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+					<div class="chart-title">3. Crypto Mania</div>
+					<div class="chart-text">Altcoins saturate the market as investors search for the "next" Bitcoin.
 					</div>
 					<div class="chart-links"><a id= "button-three" href="#!" class="btn btn-outline-light">View</a></div>
 				</div>
 			</div>
 		</div>
 		<div class="row justify-content-md-center">
-			<div id = "chartOnetext" class = "col-md"></div>
+			<div id = "chartOneText" class = "col-md"></div>
 			<div class="col-md"><svg id="chart" width = 850 height = 850></svg></div>
 		</div>
 	</section>
@@ -93,10 +93,12 @@
 		);
 	// source: https://unsplash.com/photos/nZc6W6C1l4g
 	// reference: https://bunewsservice.com/social-stock-how-social-media-and-influencers-affect-financial-markets/
-	var wsbChartText = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex tempora dolor placeat odio cum id amet, cupiditate optio quaerat, expedita atque odit, accusantium doloremque ea doloribus natus corporis sequi soluta?<br>Lorem ipsum dolor sit amet!<img src='/assets/images/reddit_phone.png' class=\x22img-fluid\x22 alt=\x22Person Holding Phone\x22>";
-
-	var stockChartText = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex tempora dolor placeat odio cum id amet, cupiditate optio quaerat, expedita atque odit, accusantium doloremque ea doloribus natus corporis sequi soluta?<br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore at earum vel officiis ratione voluptatibus nesciunt quibusdam asperiores nisi eaque tempore, fuga deleniti? Dicta aut, et nihil cumque corrupti quos!";
-
+	// source: https://www.coindesk.com/wallstreetbets-reddit-group
+	var wsbChartText = "The group “r/Wallstreetbets” (aka WSB) is a longstanding subreddit channel where over 3.5 million Reddit users discuss highly speculative trading ideas and strategies. Described as “like 4chan found a Bloomberg Terminal,” the community has caused huge disruption to financial markets.<br>Given that it’s on Reddit, it is accompanied by traditional Reddit-house style, which often includes profanity, irony, and a tremendous dose of memes.<br><img src='/assets/images/wsblogo.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22>";
+	// source: https://www.forbes.com/sites/roomykhan/2021/03/08/social-media-fueled-stock-market-trading-the-unsuspecting-need-to-be-protected/?sh=6abaf9d027dd
+	var stockChartText = "<blockquote class=\x22blockquote\x22><p class=\x22mb-0\x22>The January 2021 surge in out of favor stocks like GameStop, AMC, Blackberry, Bed Bath & Beyond, etc., was triggered by a herd of retail traders mobilized via voluminous posts on social media Reddit subforum called r/WallStreetBets(WSB). According to Bloomberg, 50 meme stocks added $276 billion in value from the end of 2020 to the mania height. However, in just a matter of days, $167 billion had been wiped out. After the hysteria ended, it is unclear how the gain and loss fallout got distributed amongst the trading community.</p><br><footer class=\x22blockquote-footer\x22>Roomy Khan from <cite title=\x22Source Title\x22>Forbes.com</cite></footer></blockquote>";
+	
+	var cryptoText = "<blockquote class=\x22blockquote\x22><p class=\x22mb-0\x22>Elon Musk becomes a rallying point for DOGE and Altcoin holders on sites like Reddit and Twitter. His appearance on “SNL” was hotly anticipated moment inside and outside crypto markets, which had largely been centered on bitcoin and Ethereum, the two largest cryptos in the world.</p><br><footer class=\x22blockquote-footer\x22><cite title=\x22Source Title\x22>MarketWatch.com</cite></footer><br><img src='/assets/images/musktweet.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22></blockquote>";
 	
 	// defining the div for the tooltip
 	// source: https://bl.ocks.org/d3noob/a22c42db65eb00d4e369
@@ -128,7 +130,7 @@
 			console.log("Names: " + res);
 			var color = d3.scaleOrdinal()
 				.domain(res)
-				.range(['#04173B','#50C2CC','#F05729','#FFB829','#03634F'])
+				.range(['#04173B','#50C2CC','#42628C','#FFB829','#03634F'])
 			var svg = d3.select("#chart")
 				.attr("width", width + 2 *margin)
 				.attr("height", height + 2*margin);
@@ -208,11 +210,73 @@
 				.duration(3000)		
 				.style("opacity", 100);
 			// generate paragraphs for chart
-			d3.select("#chartOnetext").append("p").html(stockChartText)
+			var getChartText = function(d){
+				if (dataset[0].Asset == "AMC") { return stockChartText;}
+				else { return cryptoText;}
+				}
+			d3.select("#chartOneText").html(getChartText());
+			d3.select("#chartOneText").selectAll("*")
 				.transition()
 				.delay(transitionLength)		
 				.duration(3000)		
 				.style("opacity", 100);
+			// Add annotation to the chart
+			const cryptoLabels = [
+			{
+			data: {date: "5/01/2021",	value: 1.250, detail: "Altcoins peak after dramatically rising in value."},
+			dy: 0,
+			dx: -120,	
+			}
+			].map(l => {
+				l.note = Object.assign({}, l.note, { title: `Early 2021`, label: `${l.data.detail}`
+				})
+				l.subject = { radius: 65}
+				return l;
+			});
+			const stockLabels = [
+			{
+			data: {date: "1/27/2021",	value: 347.51, detail: "GME doubles in value overnight."},
+			dy: 0,
+			dx: -50,	
+			},
+			{
+			data: {date: "2/11/2021",	value: 59.41, detail: "Redditors boost shares in Virgin Galactic space company (SPCE)"},
+			dy: 0,
+			dx: -200,	
+			},
+			{
+			data: {date: "6/2/2021",	value: 62.55, detail: "AMC stock price surges with rally driven by WallStreetBets retail investors"},
+			dy: -30,
+			dx: -140,	
+			},
+
+			].map(l => {
+				l.note = Object.assign({}, l.note, { title: `Date: ${l.data.date} Asset Price: ${formatDollarValues(l.data.value)}`, label: `${l.data.detail}`
+				})
+				l.subject = { radius: 5}
+				return l;
+			});
+			var getLabels = function(d){
+				if (dataset[0].Asset == "AMC") { return stockLabels;}
+				else { return cryptoLabels;}
+				}
+			const makeAnnotations = d3.annotation()
+			.annotations(getLabels()).type(d3.annotationCalloutCircle)
+			.accessors({ x: d => xS(parseDateAlt(d.date)), 
+			y: d => yS(d.value)
+			})
+			.accessorsInverse({
+			date: d => timeFormat(x.invert(d.x)),
+			value: d => y.invert(d.y) 
+			});
+			svg
+			.append("g")
+			.attr("transform","translate("+margin+","+margin+")")
+			.attr("class", "annotation-group")
+			.call(makeAnnotations);
+			d3.selectAll('.annotation')
+			.transition().delay(transitionLength).ease(d3.easeSin).duration(3000)
+			.style("opacity", 100);
 			}
 		return assetViz();
 		};
@@ -225,13 +289,13 @@
 	console.log(keyDates);
 
 	// create scales for line charts
-	var x = d3.scaleTime()
+	const x = d3.scaleTime()
 		.domain([
 			d3.min(wsbData, function(d){ return d.Date; }),
 			d3.max(wsbData, function(d){ return d.Date; })
 		])
 		.range([padding, width - padding]);
-	var y = d3.scaleLinear()
+	const y = d3.scaleLinear()
 		.domain([
 			0,
 			d3.max(wsbData, function(d){ return d.SubCount; })
@@ -263,15 +327,6 @@
 			.attr("stroke-dasharray", pathLength)
 			.transition(transitionPath)
 			.attr("stroke-dashoffset", 0);
-		// plot data points
-		svg.append("g")
-			.attr("transform","translate("+margin+","+margin+")")
-			.selectAll("circle").data(keyDates).enter().append("circle")
-			.attr("r", 10)
-			.attr("cx", function (d,i) { return (x(d.Date)); })
-			.attr("cy", function(d,i) { return (y(d.SubCount)); })
-			.transition().delay(transitionLength).ease(d3.easeSin).duration(3000)
-			.style("opacity", 100);
 		// add axes and labels
 		svg.append("g")
 			.attr("class", "axisWhite")
@@ -295,32 +350,36 @@
 			.style("text-anchor", "middle")
 			.text("Year");
 		// generate paragraphs for chart
-		d3.select("#chartOnetext").append("p").html(wsbChartText)
+		d3.select("#chartOneText").append("p").html(wsbChartText)
 			.transition()
 			.delay(transitionLength)		
 			.duration(3000)		
 			.style("opacity", 100);
 		const labels = [
-        {
-          data: {date: "3/16/2020",	value: 1018911, detail: "The subreddit starts to gain mainstream attention."},
-          dy: -10,
-          dx: -80,	
+		{
+          data: {date: "1/25/2017",	value: 100175, detail: "The rising popularity of retail trading apps like Robinhood naturally sends traffic towards r/wallstreetbets over time"},
+          dy: -15,
+          dx: 10,	
         },
         {
-          data: {date: "1/27/2021",	value: 4949083, detail: "By early 2021, membership had grown dramatically."},
+          data: {date: "9/19/2020",	value: 1513188, detail: "Redditor Player896 publishes post titled \x22Bankrupting Institutional Investors For Dummies, ft GameStop.\x22"},
+          dy: -10,
+          dx: -150,	
+        },
+        {
+          data: {date: "1/27/2021",	value: 4949083, detail: "WSB membership more than triples from late 2020 to 2021."},
           dy: 15,
-          dx: -70,
+          dx: -60,
         },
         {
           data: {date: "5/2/2021",	value: 10004973, detail: "WSB crosses the 10 million member mark."},
           dy: 10,
-          dx: -50,
+          dx: -50
         }
 		].map(l => {
 			l.note = Object.assign({}, l.note, { title: `Date: ${l.data.date} Members: ${formatValues(l.data.value)}`, label: `${l.data.detail}`
 			})
-			l.subject = { radius: 10}
-
+			l.subject = { radius: 5}
 			return l;
 		})
 
@@ -352,7 +411,7 @@
 			var chartTwoStatus = d3.select("#chart").selectAll("circle").empty();
 			var chartThreeStatus = d3.select("#chart").selectAll("circle").empty();
 			d3.select("#chart").selectAll('*').remove();
-			d3.select("#chartOnetext").selectAll('*').remove(); 
+			d3.select("#chartOneText").selectAll('*').remove(); 
 				switch(this.id){
 					case "button-one":
 						return wsbViz();

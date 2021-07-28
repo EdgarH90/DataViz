@@ -1,12 +1,18 @@
 body {
     font-family: 'Nunito', sans-serif;
     color:     #022859;
-    background: #F2EEEB;  /* fallback for old browsers */
-    /*background-image: url('/assets/images/reddit_phone.png');
-    background-size: cover; */
+    background: #F2EEEB;  /* fallback for old browsers */ 
     /*background: -webkit-linear-gradient(to right, #eea849, #f46b45);  /* Chrome 10-25, Safari 5.1-6 */
     /*background: linear-gradient(to right, #010057, #2a538f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
+
+#bg-image{
+    background-image: url('/assets/images/reddit_phone.png');
+    background-repeat: no-repeat;
+    position: absolute;
+    opacity: .5;
+}
+
 
 h1{
     font-family: 'Fredoka One', sans-serif;
@@ -28,6 +34,8 @@ h3{
 
 p{
     margin-top: 75px;
+    font-size: 18px;
+    text-indent: 20px;
 }
 
 .fa-plus {
@@ -115,7 +123,7 @@ div.tooltip {
     background-size: cover;
 }
 
-#chartOnetext p{
+#chartOneText p, footer, blockquote {
     opacity: 0;
 }
 
@@ -204,7 +212,7 @@ a:focus {
   }
 
 .annotation path {
-    stroke: #010B40;
+    stroke: #F05729;
     fill: none;
   }
 
@@ -212,7 +220,15 @@ a:focus {
 .title text, .annotation text,
 .annotation.callout.circle .annotation-subject path{
     fill: #022859;
-  }
+}
+
+.annotation text{
+    font-size: 12px;
+}
+.annotation.callout.circle path.subject{
+    stroke-width: 2px;
+}
+
 
 
 /* Source: https://color.adobe.com/trends 
