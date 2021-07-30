@@ -102,7 +102,7 @@
 	
 	// defining the div for the tooltip
 	// source: https://bl.ocks.org/d3noob/a22c42db65eb00d4e369
-
+	// generate visualizations
 	function createViz(dataset){
 		// define the x and y scales
 		var xS = d3.scaleTime()
@@ -111,7 +111,6 @@
 		var yS = d3.scaleLog()
 			.domain([d3.min(dataset, d => +d.Value), d3.max(dataset, d => +d.Value)])
 			.range([height - padding, padding]);
-		console.log(yS.domain());
 		var div = d3.select("body").append("div")	
 		.attr("class", "tooltip")				
     	.style("opacity", 0);
@@ -128,9 +127,10 @@
 			var sumstat = d3.group(dataset, d => d.Asset);
 			var res = Array.from(sumstat.keys()); // list of group names
 			console.log("Names: " + res);
+			console.log(res.indexOf("AMC"));
 			var color = d3.scaleOrdinal()
 				.domain(res)
-				.range(['#04173B','#50C2CC','#42628C','#FFB829','#03634F'])
+				.range(['#04173B','#50C2CC','#42628C','#FFB829','#03634F']);
 			var svg = d3.select("#chart")
 				.attr("width", width + 2 *margin)
 				.attr("height", height + 2*margin);
@@ -168,7 +168,7 @@
 				.tickValues(chartTicks())
 				.tickFormat(function(d) {
 					return formatDollarValues(d)
-					;}
+						;}
 					))
 				.append("text")
 				.attr("transform", "rotate(-90)")
@@ -189,14 +189,16 @@
 				.text("Year");
 			// highlight selected line and fade other lines
 			d3.select("#chart").selectAll("path")
-      			.on("mouseover", function(){
+				.on("mouseover", function(){
+					console.log(d3.select(this).datum()[0]);
 					d3.selectAll(".chartTwoLine").classed("chartTwoLine--hover", (d, i) => {
 					return (d3.select(this).datum()[0] === res[i]);
 					}).classed("chartTwoLine--fade", (d, i) => {
 					return (name !== res[i]);
 					})})
 				.on("mouseout", function(){
-					d3.selectAll(".chartTwoLine").classed("chartTwoLine--hover", sumstat);
+					d3.selectAll(".chartTwoLine").classed("chartTwoLine--hover", false);
+					d3.selectAll(".chartTwoLine").classed("chartTwoLine--fade", false);
 					})
 			//append legends
 			var legend = svg
@@ -215,6 +217,13 @@
 				.attr("x", 110)
 				.attr("y", (d, i) => i * 30 + 161)
 				.text((d,i) => res[i]);
+			legend.append("text")
+				.attr("x", width / 2 )
+				.attr("y", 0 + (margin +70) / 2)
+				.attr("dy", "1em")
+				.style("text-anchor", "middle")
+				.style("font-style", "italic")
+				.text("Hover over each path to highlight");
 			legend.selectAll("*")
 				.transition()
 				.delay(transitionLength)		
@@ -234,7 +243,7 @@
 			// Add annotation to the chart
 			const cryptoLabels = [
 			{
-			data: {date: "5/01/2021",	value: 1.250, detail: "Altcoins peak after dramatically rising in value."},
+			data: {date: "5/01/2021",	value: 1.250, detail: "Altcoins peak after dramatically rising in value.", name: "AMC"},
 			dy: 0,
 			dx: -120,	
 			}
@@ -246,17 +255,17 @@
 			});
 			const stockLabels = [
 			{
-			data: {date: "1/27/2021",	value: 347.51, detail: "GME doubles in value overnight."},
+			data: {date: "1/27/2021",	value: 347.51, detail: "GameStop (GME) doubles in value overnight." , name: "GME"},
 			dy: 0,
 			dx: -50,	
 			},
 			{
-			data: {date: "2/11/2021",	value: 59.41, detail: "Redditors boost shares in Virgin Galactic space company (SPCE)"},
+			data: {date: "2/11/2021",	value: 59.41, detail: "Redditors boost shares in Virgin Galactic space company (SPCE)", name: "SPCE"},
 			dy: 0,
 			dx: -200,	
 			},
 			{
-			data: {date: "6/2/2021",	value: 62.55, detail: "AMC stock price surges with rally driven by WallStreetBets retail investors"},
+			data: {date: "6/2/2021",	value: 62.55, detail: "AMC stock price surges with rally driven by WallStreetBets retail investors", name: "AMC"},
 			dy: -30,
 			dx: -140,	
 			},
@@ -280,6 +289,131 @@
 			date: d => timeFormat(x.invert(d.x)),
 			value: d => y.invert(d.y) 
 			});
+			console.log(stockLabels[0].data.name);
+			svg
+			.append("g")
+			.attr("transform","translate("+margin+","+margin+")")
+			.attr("class", "annotation-group")
+			.call(makeAnnotations)
+			svg.selectAll(".annotation path")
+        	.style("stroke", function(d,i) { console.log(d.data.name); return color(d.data.name)});
+			d3.selectAll('.annotation')
+			.transition().delay(transitionLength).ease(d3.easeSin).duration(3000)
+			.style("opacity", 100);
+			}
+		return assetViz();
+		};
+
+	function createWSBViz(dataset){
+		// create scales for line charts
+		const x = d3.scaleTime()
+			.domain([
+				d3.min(dataset, function(d){ return d.Date; }),
+				d3.max(dataset, function(d){ return d.Date; })
+			])
+		.range([padding, width - padding]);
+		const y = d3.scaleLinear()
+			.domain([
+				0,
+				d3.max(dataset, function(d){ return d.SubCount; })
+			])
+		.range([height - padding, padding]);
+		var wsbViz = function(d){
+			var svg = d3.select("#chart")
+			.attr("width", width + 2 *margin)
+			.attr("height", height + 2*margin);
+			var wsb_line = d3.line()
+				.x(function(d) { return x(d.Date); })
+				.y(function(d) { return y(d.SubCount); });	
+			// add line to points
+			var chartPath = svg.append("path")
+				.datum(dataset) //.filter(function(d) {return d.SubCount > 100000}))
+				.attr("class", "chartOneLine")
+				.attr("stroke", "#010B40")
+				.attr("d", wsb_line)
+				.attr("transform","translate("+margin+","+margin+")");
+			// get the total length of the chart line	
+			var pathLength = chartPath.node().getTotalLength();
+			// set the transition values using the path length to draw the line
+			const transitionPath = d3.transition()
+				.ease(d3.easeSin)
+				.duration(transitionLength);
+			chartPath
+				.attr("stroke-dashoffset", pathLength)
+				.attr("stroke-dasharray", pathLength)
+				.transition(transitionPath)
+				.attr("stroke-dashoffset", 0);
+			// add axes and labels
+			svg.append("g")
+				.attr("class", "axisWhite")
+				.attr("transform","translate("+margin+","+margin+")")
+				.call(d3.axisLeft(y).tickFormat(function(d) { return formatAxisValues(d)}))
+				.append("text")
+				.attr("transform", "rotate(-90)")
+				.attr("y",0- margin + 10)
+				.attr("x",0 - (height / 2))
+				.attr("dy", "1em")
+				.style("text-anchor", "middle")
+				.text("Number of Members");
+			svg.append("g")
+				.attr("class", "axisWhite")
+				.attr("transform","translate("+margin+","+(height+margin)+")")
+				.call(d3.axisBottom(x).ticks(d3.timeYear).tickFormat(d3.timeFormat("%Y")))
+				.append("text") // text label for the x axis
+				.attr("x", width / 2 )
+				.attr("y", 0 + (margin - 20) / 2)
+				.attr("dy", "1em")
+				.style("text-anchor", "middle")
+				.text("Year");
+			// generate paragraphs for chart
+			d3.select("#chartOneText").append("p").html(wsbChartText)
+				.transition()
+				.delay(transitionLength)		
+				.duration(3000)		
+				.style("opacity", 100);
+			const labels = [
+			{
+			data: {date: "1/25/2017",	value: 100175, detail: "The rising popularity of retail trading apps like Robinhood naturally sends traffic towards r/wallstreetbets over time"},
+			dy: -15,
+			dx: 10,	
+			},
+			{
+			data: {date: "9/19/2020",	value: 1513188, detail: "Redditor u/Player896 publishes post titled \x22Bankrupting Institutional Investors For Dummies, ft GameStop.\x22"},
+			dy: -10,
+			dx: -150,	
+			},
+			{
+			data: {date: "1/27/2021",	value: 4949083, detail: "WSB membership more than triples from late 2020 to 2021."},
+			dy: 15,
+			dx: -60,
+			},
+			{
+			data: {date: "2/18/2021",	value: 9161570, detail: "Redditor Keith Gill testifies at congressional hearing on GameStop."},
+			dy: 50,
+			dx: -60,
+			},
+			{
+			data: {date: "5/2/2021",	value: 10004973, detail: "WSB crosses the 10 million member mark."},
+			dy: 10,
+			dx: -50
+			}
+			].map(l => {
+				l.note = Object.assign({}, l.note, { title: `Date: ${l.data.date} Members: ${formatValues(l.data.value)}`, label: `${l.data.detail}`
+				})
+				l.subject = { radius: 5}
+				return l;
+			})
+
+			// Add annotation to the chart
+			const makeAnnotations = d3.annotation()
+			.annotations(labels).type(d3.annotationCalloutCircle)
+			.accessors({ x: d => x(parseDateAlt(d.date)), 
+			y: d => y(d.value)
+			})
+			.accessorsInverse({
+			date: d => timeFormat(x.invert(d.x)),
+			value: d => y.invert(d.y) 
+			});
 			svg
 			.append("g")
 			.attr("transform","translate("+margin+","+margin+")")
@@ -288,155 +422,27 @@
 			d3.selectAll('.annotation')
 			.transition().delay(transitionLength).ease(d3.easeSin).duration(3000)
 			.style("opacity", 100);
-			}
-		return assetViz();
 		};
-
-
-	// define variable for important dates
-	var keyDates = [];
-	var keyStockValues = [];
-	keyDates.push(wsbData[1118], wsbData[1367], wsbData[1458] );
-	console.log(keyDates);
-
-	// create scales for line charts
-	const x = d3.scaleTime()
-		.domain([
-			d3.min(wsbData, function(d){ return d.Date; }),
-			d3.max(wsbData, function(d){ return d.Date; })
-		])
-		.range([padding, width - padding]);
-	const y = d3.scaleLinear()
-		.domain([
-			0,
-			d3.max(wsbData, function(d){ return d.SubCount; })
-		])
-		.range([height - padding, padding]);
-	// generate visualization
-	var wsbViz = function(d){
-		var svg = d3.select("#chart")
-		.attr("width", width + 2 *margin)
-		.attr("height", height + 2*margin);
-		var wsb_line = d3.line()
-			.x(function(d) { return x(d.Date); })
-			.y(function(d) { return y(d.SubCount); });	
-		// add line to points
-		var chartPath = svg.append("path")
-			.datum(wsbData) //.filter(function(d) {return d.SubCount > 100000}))
-			.attr("class", "chartOneLine")
-			.attr("stroke", "#010B40")
-			.attr("d", wsb_line)
-			.attr("transform","translate("+margin+","+margin+")");
-		// get the total length of the chart line	
-		var pathLength = chartPath.node().getTotalLength();
-		// set the transition values using the path length to draw the line
-		const transitionPath = d3.transition()
-			.ease(d3.easeSin)
-			.duration(transitionLength);
-		chartPath
-			.attr("stroke-dashoffset", pathLength)
-			.attr("stroke-dasharray", pathLength)
-			.transition(transitionPath)
-			.attr("stroke-dashoffset", 0);
-		// add axes and labels
-		svg.append("g")
-			.attr("class", "axisWhite")
-			.attr("transform","translate("+margin+","+margin+")")
-			.call(d3.axisLeft(y).tickFormat(function(d) { return formatAxisValues(d)}))
-			.append("text")
-			.attr("transform", "rotate(-90)")
-			.attr("y",0- margin + 10)
-			.attr("x",0 - (height / 2))
-			.attr("dy", "1em")
-			.style("text-anchor", "middle")
-			.text("Number of Members");
-		svg.append("g")
-			.attr("class", "axisWhite")
-			.attr("transform","translate("+margin+","+(height+margin)+")")
-			.call(d3.axisBottom(x).ticks(d3.timeYear).tickFormat(d3.timeFormat("%Y")))
-			.append("text") // text label for the x axis
-			.attr("x", width / 2 )
-			.attr("y", 0 + (margin - 20) / 2)
-			.attr("dy", "1em")
-			.style("text-anchor", "middle")
-			.text("Year");
-		// generate paragraphs for chart
-		d3.select("#chartOneText").append("p").html(wsbChartText)
-			.transition()
-			.delay(transitionLength)		
-			.duration(3000)		
-			.style("opacity", 100);
-		const labels = [
-		{
-          data: {date: "1/25/2017",	value: 100175, detail: "The rising popularity of retail trading apps like Robinhood naturally sends traffic towards r/wallstreetbets over time"},
-          dy: -15,
-          dx: 10,	
-        },
-        {
-          data: {date: "9/19/2020",	value: 1513188, detail: "Redditor u/Player896 publishes post titled \x22Bankrupting Institutional Investors For Dummies, ft GameStop.\x22"},
-          dy: -10,
-          dx: -150,	
-        },
-        {
-          data: {date: "1/27/2021",	value: 4949083, detail: "WSB membership more than triples from late 2020 to 2021."},
-          dy: 15,
-          dx: -60,
-        },
-		{
-          data: {date: "2/18/2021",	value: 9161570, detail: "Redditor Keith Gill testifies at congressional hearing on GameStop."},
-          dy: 50,
-          dx: -60,
-        },
-        {
-          data: {date: "5/2/2021",	value: 10004973, detail: "WSB crosses the 10 million member mark."},
-          dy: 10,
-          dx: -50
-        }
-		].map(l => {
-			l.note = Object.assign({}, l.note, { title: `Date: ${l.data.date} Members: ${formatValues(l.data.value)}`, label: `${l.data.detail}`
-			})
-			l.subject = { radius: 5}
-			return l;
-		})
-
-		// Add annotation to the chart
-		const makeAnnotations = d3.annotation()
-		.annotations(labels).type(d3.annotationCalloutCircle)
-		.accessors({ x: d => x(parseDateAlt(d.date)), 
-          y: d => y(d.value)
-        })
-        .accessorsInverse({
-          date: d => timeFormat(x.invert(d.x)),
-          value: d => y.invert(d.y) 
-        });
-		svg
-		.append("g")
-		.attr("transform","translate("+margin+","+margin+")")
-		.attr("class", "annotation-group")
-		.call(makeAnnotations);
-		d3.selectAll('.annotation')
-		.transition().delay(transitionLength).ease(d3.easeSin).duration(3000)
-		.style("opacity", 100);
-	};
-
-	// generate first chart on click
-	d3.selectAll("#button-one, #button-two, #button-three")
-		.on("click", function(d) {
-			console.log(this.id);
-			var chartOneStatus = d3.select("#chart").selectAll("circle").empty(); 
-			var chartTwoStatus = d3.select("#chart").selectAll("circle").empty();
-			var chartThreeStatus = d3.select("#chart").selectAll("circle").empty();
-			d3.select("#chart").selectAll('*').remove();
-			d3.select("#chartOneText").selectAll('*').remove(); 
-				switch(this.id){
-					case "button-one":
-						return wsbViz();
-					case "button-two":
-						return createViz(stockData);
-					case "button-three":
-						return createViz(cryptoData);
-			}  
-		});
+		return wsbViz();
+		};
+		// generate chart on click
+		d3.selectAll("#button-one, #button-two, #button-three")
+			.on("click", function(d) {
+				console.log(this.id);
+				var chartOneStatus = d3.select("#chart").selectAll("circle").empty(); 
+				var chartTwoStatus = d3.select("#chart").selectAll("circle").empty();
+				var chartThreeStatus = d3.select("#chart").selectAll("circle").empty();
+				d3.select("#chart").selectAll('*').remove();
+				d3.select("#chartOneText").selectAll('*').remove(); 
+					switch(this.id){
+						case "button-one":
+							return createWSBViz(wsbData);
+						case "button-two":
+							return createViz(stockData);
+						case "button-three":
+							return createViz(cryptoData);
+				}  
+			});
 	};
 	</script>
 	

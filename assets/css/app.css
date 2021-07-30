@@ -62,7 +62,7 @@ p{
     stroke-width: 2;
 }
 
-.chartTwoLine {
+.chartTwoLine{
     fill: none;
     stroke-width: 1.5;
 }
@@ -75,14 +75,15 @@ p{
 
 .chartTwoLine--hover {
     fill: none;
-    stroke-width: 2;
+    stroke-width: 2.5;
     opacity: 1; 
 }
 
 .legend text{
-    fill:  black;
+    fill:  #010B40;
     opacity: 0;
 }
+
 
 .legend circle {
     stroke-width: 1;
@@ -231,6 +232,7 @@ a:focus {
 
 .annotation path {
     stroke: #F05729;
+    stroke-width: 3px;
     fill: none;
   }
 
