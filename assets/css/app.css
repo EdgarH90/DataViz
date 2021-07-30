@@ -244,6 +244,7 @@ a:focus {
 
 .annotation text{
     font-size: 12px;
+    cursor:pointer;
 }
 .annotation.callout.circle path.subject{
     stroke-width: 2px;

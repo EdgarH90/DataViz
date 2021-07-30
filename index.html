@@ -10,8 +10,8 @@
 </head>
 <body onload='init()'>
     <section class="container">
-		<h1 class="display-2 text-center"><i class="fab fa-reddit-alien"></i>social stock</h1>
-		<h4 class="text-center">How social media can influence financial markets </h3>   
+		<h1 class="display-3 text-center"><i class="fab fa-reddit-alien"></i>social stock </h1>
+		<h5 class="text-center">How social media can influence financial markets </h5>   
 	</section>
 	<section class = "container">
 		<div class="row justify-content-md-center">
@@ -94,11 +94,11 @@
 	// source: https://unsplash.com/photos/nZc6W6C1l4g
 	// reference: https://bunewsservice.com/social-stock-how-social-media-and-influencers-affect-financial-markets/
 	// source: https://www.coindesk.com/wallstreetbets-reddit-group
-	var wsbChartText = "The group “r/Wallstreetbets” (aka WSB) is a longstanding subreddit channel where over 3.5 million Reddit users discuss highly speculative trading ideas and strategies. Described as “like 4chan found a Bloomberg Terminal,” the community has caused huge disruption to financial markets.<br>Given that it’s on <a class=\x22link\x22 href=\x22https://www.reddit.com/r/wallstreetbets\x22>Reddit</a>, it is accompanied by traditional Reddit-house style, which often includes profanity, irony, and a tremendous dose of memes.<br><img src='./assets/images/wsblogo.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22>";
+	var wsbChartText = "<a class=\x22link\x22 href=\x22https://www.reddit.com/r/wallstreetbets\x22>The group “r/Wallstreetbets” (aka WSB) is a longstanding subreddit channel where over 3.5 million Reddit users discuss highly speculative trading ideas and strategies. Described as “like 4chan found a Bloomberg Terminal,” the community has caused huge disruption to financial markets.<br>Given that it’s on Reddit, it is accompanied by traditional Reddit-house style, which often includes profanity, irony, and a tremendous dose of memes.</a><br><img src='./assets/images/wsblogo.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22>";
 	// source: https://www.forbes.com/sites/roomykhan/2021/03/08/social-media-fueled-stock-market-trading-the-unsuspecting-need-to-be-protected/?sh=6abaf9d027dd
-	var stockChartText = "<blockquote class=\x22blockquote\x22><p class=\x22mb-0\x22>The January 2021 surge in out of favor stocks like GameStop, AMC, Blackberry, Bed Bath & Beyond, etc., was triggered by a herd of retail traders mobilized via voluminous posts on social media Reddit subforum called r/WallStreetBets(WSB). According to Bloomberg, 50 meme stocks added $276 billion in value from the end of 2020 to the mania height. However, in just a matter of days, $167 billion had been wiped out. After the hysteria ended, it is unclear how the gain and loss fallout got distributed amongst the trading community.</p><br><footer class=\x22blockquote-footer\x22>Roomy Khan from <cite title=\x22Source Title\x22>Forbes.com</cite></footer></blockquote>";
+	var stockChartText = "<blockquote class=\x22blockquote\x22><p class=\x22mb-0\x22><a class=\x22link\x22 href=\x22https://www.forbes.com/sites/roomykhan/2021/03/08/social-media-fueled-stock-market-trading-the-unsuspecting-need-to-be-protected/?sh=6abaf9d027dd\x22 target=\x22_blank\x22 rel=\x22noopener noreferrer\x22>The January 2021 surge in out of favor stocks like GameStop, AMC, Blackberry, Bed Bath & Beyond, etc., was triggered by a herd of retail traders mobilized via voluminous posts on social media Reddit subforum called r/WallStreetBets(WSB). According to Bloomberg, 50 meme stocks added $276 billion in value from the end of 2020 to the mania height. However, in just a matter of days, $167 billion had been wiped out. After the hysteria ended, it is unclear how the gain and loss fallout got distributed amongst the trading community.</a></p><br><footer class=\x22blockquote-footer\x22>Roomy Khan from <cite title=\x22Source Title\x22>Forbes.com</cite></footer></blockquote>";
 	
-	var cryptoText = "<blockquote class=\x22blockquote\x22><p class=\x22mb-0\x22>Elon Musk becomes a rallying point for DOGE and Altcoin holders on sites like Reddit and Twitter. His appearance on “SNL” was hotly anticipated moment inside and outside crypto markets, which had largely been centered on bitcoin and Ethereum, the two largest cryptos in the world.</p><br><footer class=\x22blockquote-footer\x22><cite title=\x22Source Title\x22>MarketWatch.com</cite></footer><br><img src='./assets/images/musktweet.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22></blockquote>";
+	var cryptoText = "<blockquote class=\x22blockquote\x22><p class=\x22mb-0\x22><a class=\x22link\x22 href=\x22https://www.cnbc.com/2021/05/12/dogecoin-price-surge-elon-musk-slim-jim.html\x22 target=\x22_blank\x22 rel=\x22noopener noreferrer\x22> Elon Musk becomes a rallying point for DOGE and Altcoin holders on sites like Reddit and Twitter. His appearance on “SNL” was hotly anticipated moment inside and outside crypto markets, which had largely been centered on bitcoin and Ethereum, the two largest cryptos in the world.</a></p><br><footer class=\x22blockquote-footer\x22><cite title=\x22Source Title\x22>CNBC.com</cite></footer><br><img src='./assets/images/musktweet.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22></blockquote>";
 	
 	// defining the div for the tooltip
 	// source: https://bl.ocks.org/d3noob/a22c42db65eb00d4e369
@@ -126,8 +126,6 @@
 			// https://www.goodmarketing.club/guide/d3-js-multiple-lines-chart-w-line-by-line-code-explanations/
 			var sumstat = d3.group(dataset, d => d.Asset);
 			var res = Array.from(sumstat.keys()); // list of group names
-			console.log("Names: " + res);
-			console.log(res.indexOf("AMC"));
 			var color = d3.scaleOrdinal()
 				.domain(res)
 				.range(['#04173B','#50C2CC','#42628C','#FFB829','#03634F']);
@@ -165,11 +163,9 @@
 				.attr("class", "axisWhite")
 				.attr("transform","translate("+margin+","+margin+")")
 				.call(d3.axisLeft(yS)
-				.tickValues(chartTicks())
-				.tickFormat(function(d) {
-					return formatDollarValues(d)
-						;}
-					))
+					.tickValues(chartTicks())
+					.tickFormat((d) => formatDollarValues(d))
+					)
 				.append("text")
 				.attr("transform", "rotate(-90)")
 				.attr("y",0- margin + 5)
@@ -190,7 +186,6 @@
 			// highlight selected line and fade other lines
 			d3.select("#chart").selectAll("path")
 				.on("mouseover", function(){
-					console.log(d3.select(this).datum()[0]);
 					d3.selectAll(".chartTwoLine").classed("chartTwoLine--hover", (d, i) => {
 					return (d3.select(this).datum()[0] === res[i]);
 					}).classed("chartTwoLine--fade", (d, i) => {
@@ -243,7 +238,7 @@
 			// Add annotation to the chart
 			const cryptoLabels = [
 			{
-			data: {date: "5/01/2021",	value: 1.250, detail: "Altcoins peak after dramatically rising in value.", name: "AMC"},
+			data: {date: "5/01/2021",	value: 1.250, detail: "Altcoins peak after dramatically rising in value.", name: "AMC", url: "https://cointelegraph.com/news/traders-flock-into-altcoins-as-bitcoin-price-trades-sideways"},
 			dy: 0,
 			dx: -120,	
 			}
@@ -255,21 +250,20 @@
 			});
 			const stockLabels = [
 			{
-			data: {date: "1/27/2021",	value: 347.51, detail: "GameStop (GME) doubles in value overnight." , name: "GME"},
+			data: {date: "1/27/2021",	value: 347.51, detail: "GameStop (GME) doubles in value overnight." , name: "GME", url:"https://www.sharesmagazine.co.uk/news/shares/gamestop-shares-double-overnight-in-sign-reddit-retail-frenzy-has-returned"},
 			dy: 0,
 			dx: -50,	
 			},
 			{
-			data: {date: "2/11/2021",	value: 59.41, detail: "Redditors boost shares in Virgin Galactic space company (SPCE)", name: "SPCE"},
+			data: {date: "2/11/2021",	value: 59.41, detail: "Redditors boost shares in Virgin Galactic space company (SPCE)", name: "SPCE", url:"https://www.standard.co.uk/business/sir-richard-branson-s-wealth-hits-new-high-as-redditors-boost-shares-in-his-virgin-galactic-space-company-b918329.html"},
 			dy: 0,
 			dx: -200,	
 			},
 			{
-			data: {date: "6/2/2021",	value: 62.55, detail: "AMC stock price surges with rally driven by WallStreetBets retail investors", name: "AMC"},
+			data: {date: "6/02/2021",	value: 62.55, detail: "AMC stock price surges with rally driven by WallStreetBets retail investors", name: "AMC", url:"https://www.hollywoodreporter.com/business/business-news/amc-theaters-wallstreetbets-website-1234961776/"},
 			dy: -30,
 			dx: -140,	
 			},
-
 			].map(l => {
 				l.note = Object.assign({}, l.note, { title: `Date: ${l.data.date} Asset Price: ${formatDollarValues(l.data.value)}`, label: `${l.data.detail}`
 				})
@@ -288,18 +282,21 @@
 			.accessorsInverse({
 			date: d => timeFormat(x.invert(d.x)),
 			value: d => y.invert(d.y) 
-			});
-			console.log(stockLabels[0].data.name);
+			})
 			svg
 			.append("g")
 			.attr("transform","translate("+margin+","+margin+")")
 			.attr("class", "annotation-group")
 			.call(makeAnnotations)
 			svg.selectAll(".annotation path")
-        	.style("stroke", function(d,i) { console.log(d.data.name); return color(d.data.name)});
+        	.style("stroke", (d,i) => color(d.data.name))
+			svg.selectAll('.annotation').select('text')
+			.attr("xlink:href", function(d,i){return d.data.url;})
+			.on('click', function(d,i){return window.open(d3.select(this).datum().data.url, '_blank');});
 			d3.selectAll('.annotation')
 			.transition().delay(transitionLength).ease(d3.easeSin).duration(3000)
 			.style("opacity", 100);
+
 			}
 		return assetViz();
 		};
@@ -373,27 +370,27 @@
 				.style("opacity", 100);
 			const labels = [
 			{
-			data: {date: "1/25/2017",	value: 100175, detail: "The rising popularity of retail trading apps like Robinhood naturally sends traffic towards r/wallstreetbets over time"},
+			data: {date: "1/25/2017",	value: 100175, detail: "The rising popularity of retail trading apps like Robinhood naturally sends traffic towards r/wallstreetbets over time", url: "https://www.insider.com/wallstreetbets-reddit-history-gme-gamestop-stock-dow-futures-yolo-2021-1"},
 			dy: -15,
 			dx: 10,	
 			},
 			{
-			data: {date: "9/19/2020",	value: 1513188, detail: "Redditor u/Player896 publishes post titled \x22Bankrupting Institutional Investors For Dummies, ft GameStop.\x22"},
+			data: {date: "9/19/2020",	value: 1513188, detail: "Redditor u/Player896 publishes post titled \x22Bankrupting Institutional Investors For Dummies, ft GameStop.\x22", url:"https://www.reddit.com/r/wallstreetbets/comments/ivs6dw/bankrupting_institutional_investors_for_dummies/"},
 			dy: -10,
 			dx: -150,	
 			},
 			{
-			data: {date: "1/27/2021",	value: 4949083, detail: "WSB membership more than triples from late 2020 to 2021."},
+			data: {date: "1/27/2021",	value: 4949083, detail: "WSB membership more than triples from late 2020 to 2021.", url:"https://www.newsweek.com/wallstreetbets-subreddit-gains-2-million-members-day-wall-street-1565145"},
 			dy: 15,
 			dx: -60,
 			},
 			{
-			data: {date: "2/18/2021",	value: 9161570, detail: "Redditor Keith Gill testifies at congressional hearing on GameStop."},
+			data: {date: "2/18/2021",	value: 9161570, detail: "Redditor Keith Gill testifies at congressional hearing on GameStop.", url:"https://www.boston.com/news/local-news/2021/02/18/keith-gill-roaring-kitty-gamestop-congress/"},
 			dy: 50,
 			dx: -60,
 			},
 			{
-			data: {date: "5/2/2021",	value: 10004973, detail: "WSB crosses the 10 million member mark."},
+			data: {date: "5/2/2021",	value: 10004973, detail: "WSB crosses the 10 million member mark.", url:"https://investorplace.com/2021/05/3-reddit-stocks-celebrating-10-million-users-at-wallstreetbets/"},
 			dy: 10,
 			dx: -50
 			}
@@ -419,6 +416,9 @@
 			.attr("transform","translate("+margin+","+margin+")")
 			.attr("class", "annotation-group")
 			.call(makeAnnotations);
+			svg.selectAll('.annotation').select('text')
+			.attr("xlink:href", function(d,i){return d.data.url;})
+			.on('click', function(d,i){return window.open(d3.select(this).datum().data.url, '_blank');});
 			d3.selectAll('.annotation')
 			.transition().delay(transitionLength).ease(d3.easeSin).duration(3000)
 			.style("opacity", 100);
@@ -428,7 +428,6 @@
 		// generate chart on click
 		d3.selectAll("#button-one, #button-two, #button-three")
 			.on("click", function(d) {
-				console.log(this.id);
 				var chartOneStatus = d3.select("#chart").selectAll("circle").empty(); 
 				var chartTwoStatus = d3.select("#chart").selectAll("circle").empty();
 				var chartThreeStatus = d3.select("#chart").selectAll("circle").empty();
