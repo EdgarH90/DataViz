@@ -64,7 +64,19 @@ p{
 
 .chartTwoLine {
     fill: none;
+    stroke-width: 1.5;
+}
+
+.chartTwoLine--fade {
+    fill: none;
     stroke-width: 2;
+    opacity: 0.2; 
+}
+
+.chartTwoLine--hover {
+    fill: none;
+    stroke-width: 2;
+    opacity: 1; 
 }
 
 .legend text{
@@ -132,6 +144,12 @@ a:hover,
 a:focus {
     color: inherit;
 }
+
+#chartOneText a:link {
+    color:#F05729;
+    font-weight: bold;
+}
+
 
 .container-fluid,
 .container {

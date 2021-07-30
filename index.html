@@ -94,7 +94,7 @@
 	// source: https://unsplash.com/photos/nZc6W6C1l4g
 	// reference: https://bunewsservice.com/social-stock-how-social-media-and-influencers-affect-financial-markets/
 	// source: https://www.coindesk.com/wallstreetbets-reddit-group
-	var wsbChartText = "The group “r/Wallstreetbets” (aka WSB) is a longstanding subreddit channel where over 3.5 million Reddit users discuss highly speculative trading ideas and strategies. Described as “like 4chan found a Bloomberg Terminal,” the community has caused huge disruption to financial markets.<br>Given that it’s on Reddit, it is accompanied by traditional Reddit-house style, which often includes profanity, irony, and a tremendous dose of memes.<br><img src='./assets/images/wsblogo.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22>";
+	var wsbChartText = "The group “r/Wallstreetbets” (aka WSB) is a longstanding subreddit channel where over 3.5 million Reddit users discuss highly speculative trading ideas and strategies. Described as “like 4chan found a Bloomberg Terminal,” the community has caused huge disruption to financial markets.<br>Given that it’s on <a class=\x22link\x22 href=\x22https://www.reddit.com/r/wallstreetbets\x22>Reddit</a>, it is accompanied by traditional Reddit-house style, which often includes profanity, irony, and a tremendous dose of memes.<br><img src='./assets/images/wsblogo.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22>";
 	// source: https://www.forbes.com/sites/roomykhan/2021/03/08/social-media-fueled-stock-market-trading-the-unsuspecting-need-to-be-protected/?sh=6abaf9d027dd
 	var stockChartText = "<blockquote class=\x22blockquote\x22><p class=\x22mb-0\x22>The January 2021 surge in out of favor stocks like GameStop, AMC, Blackberry, Bed Bath & Beyond, etc., was triggered by a herd of retail traders mobilized via voluminous posts on social media Reddit subforum called r/WallStreetBets(WSB). According to Bloomberg, 50 meme stocks added $276 billion in value from the end of 2020 to the mania height. However, in just a matter of days, $167 billion had been wiped out. After the hysteria ended, it is unclear how the gain and loss fallout got distributed amongst the trading community.</p><br><footer class=\x22blockquote-footer\x22>Roomy Khan from <cite title=\x22Source Title\x22>Forbes.com</cite></footer></blockquote>";
 	
@@ -187,6 +187,17 @@
 				.attr("dy", "1em")
 				.style("text-anchor", "middle")
 				.text("Year");
+			// highlight selected line and fade other lines
+			d3.select("#chart").selectAll("path")
+      			.on("mouseover", function(){
+					d3.selectAll(".chartTwoLine").classed("chartTwoLine--hover", (d, i) => {
+					return (d3.select(this).datum()[0] === res[i]);
+					}).classed("chartTwoLine--fade", (d, i) => {
+					return (name !== res[i]);
+					})})
+				.on("mouseout", function(){
+					d3.selectAll(".chartTwoLine").classed("chartTwoLine--hover", sumstat);
+					})
 			//append legends
 			var legend = svg
 				.selectAll('g.legend')
@@ -362,13 +373,18 @@
           dx: 10,	
         },
         {
-          data: {date: "9/19/2020",	value: 1513188, detail: "Redditor Player896 publishes post titled \x22Bankrupting Institutional Investors For Dummies, ft GameStop.\x22"},
+          data: {date: "9/19/2020",	value: 1513188, detail: "Redditor u/Player896 publishes post titled \x22Bankrupting Institutional Investors For Dummies, ft GameStop.\x22"},
           dy: -10,
           dx: -150,	
         },
         {
           data: {date: "1/27/2021",	value: 4949083, detail: "WSB membership more than triples from late 2020 to 2021."},
           dy: 15,
+          dx: -60,
+        },
+		{
+          data: {date: "2/18/2021",	value: 9161570, detail: "Redditor Keith Gill testifies at congressional hearing on GameStop."},
+          dy: 50,
           dx: -60,
         },
         {
