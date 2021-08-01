@@ -10,8 +10,8 @@
 </head>
 <body onload='init()'>
     <section class="container">
-		<h1 class="display-3 text-center"><i class="fab fa-reddit-alien"></i>social stock </h1>
-		<h5 class="text-center">How social media can influence financial markets </h5>   
+		<h1 class="display-4 text-center"><i class="fab fa-reddit-alien"></i>social stock </h1>
+		<h6 class="text-center">Social media's influence on financial markets</h6>   
 	</section>
 	<section class = "container">
 		<div class="row justify-content-md-center">
@@ -26,7 +26,7 @@
 			<div class="col-md-4" >
 				<div class="chart-card"><img src="./assets/images/amc_background.jpg" class="img img-responsive">
 					<div class="chart-title">2. Meme Investing</div>
-					<div class="chart-text">With millions of individuals confined at home, the COVID-19 pandemic amplified the retail trading surge.
+					<div class="chart-text">With millions of individuals confined at home, social media amplified the retail trading surge.
 					</div>
 					<div class="chart-links"><a id= "button-two" href="#!" class="btn btn-outline-light">View</a></div>
 				</div>
@@ -34,7 +34,7 @@
 			<div class="col-md-4" >
 				<div class="chart-card"><img src="./assets/images/crypto_background.jpg" class="img img-responsive">
 					<div class="chart-title">3. Crypto Mania</div>
-					<div class="chart-text">Altcoins saturate the market as investors search for the "next" Bitcoin.
+					<div class="chart-text">Altcoins saturate the market and social media as retail investors search for the "next" Bitcoin.
 					</div>
 					<div class="chart-links"><a id= "button-three" href="#!" class="btn btn-outline-light">View</a></div>
 				</div>
@@ -94,7 +94,7 @@
 	// source: https://unsplash.com/photos/nZc6W6C1l4g
 	// reference: https://bunewsservice.com/social-stock-how-social-media-and-influencers-affect-financial-markets/
 	// source: https://www.coindesk.com/wallstreetbets-reddit-group
-	var wsbChartText = "<a class=\x22link\x22 href=\x22https://www.reddit.com/r/wallstreetbets\x22>The group “r/Wallstreetbets” (aka WSB) is a longstanding subreddit channel where over 3.5 million Reddit users discuss highly speculative trading ideas and strategies. Described as “like 4chan found a Bloomberg Terminal,” the community has caused huge disruption to financial markets.<br>Given that it’s on Reddit, it is accompanied by traditional Reddit-house style, which often includes profanity, irony, and a tremendous dose of memes.</a><br><img src='./assets/images/wsblogo.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22>";
+	var wsbChartText = "<a class=\x22link\x22 href=\x22https://www.reddit.com/r/wallstreetbets\x22 target=\x22_blank\x22 rel=\x22noopener noreferrer\x22>The group “r/Wallstreetbets” (aka WSB) is a longstanding subreddit channel where over 3.5 million Reddit users discuss highly speculative trading ideas and strategies. Described as “like 4chan found a Bloomberg Terminal,” the community has caused huge disruption to financial markets.<br>Given that it’s on Reddit, it is accompanied by traditional Reddit-house style, which often includes profanity, irony, and a tremendous dose of memes.</a><br><img src='./assets/images/wsblogo.png' class=\x22img-fluid\x22 alt=\x22WSB Logo\x22>";
 	// source: https://www.forbes.com/sites/roomykhan/2021/03/08/social-media-fueled-stock-market-trading-the-unsuspecting-need-to-be-protected/?sh=6abaf9d027dd
 	var stockChartText = "<blockquote class=\x22blockquote\x22><p class=\x22mb-0\x22><a class=\x22link\x22 href=\x22https://www.forbes.com/sites/roomykhan/2021/03/08/social-media-fueled-stock-market-trading-the-unsuspecting-need-to-be-protected/?sh=6abaf9d027dd\x22 target=\x22_blank\x22 rel=\x22noopener noreferrer\x22>The January 2021 surge in out of favor stocks like GameStop, AMC, Blackberry, Bed Bath & Beyond, etc., was triggered by a herd of retail traders mobilized via voluminous posts on social media Reddit subforum called r/WallStreetBets(WSB). According to Bloomberg, 50 meme stocks added $276 billion in value from the end of 2020 to the mania height. However, in just a matter of days, $167 billion had been wiped out. After the hysteria ended, it is unclear how the gain and loss fallout got distributed amongst the trading community.</a></p><br><footer class=\x22blockquote-footer\x22>Roomy Khan from <cite title=\x22Source Title\x22>Forbes.com</cite></footer></blockquote>";
 	
@@ -159,30 +159,31 @@
 				.attr("stroke-dashoffset", 0);
 			// add axes and labels
 			var leftAxis = 
-			svg.append("g")
-				.attr("class", "axisWhite")
-				.attr("transform","translate("+margin+","+margin+")")
-				.call(d3.axisLeft(yS)
-					.tickValues(chartTicks())
-					.tickFormat((d) => formatDollarValues(d))
-					)
-				.append("text")
-				.attr("transform", "rotate(-90)")
-				.attr("y",0- margin + 5)
-				.attr("x",0 - (height / 2))
-				.attr("dy", "1em")
-				.style("text-anchor", "middle")
-				.text("Asset Price (Log Scale)");
-			svg.append("g")
-				.attr("class", "axisWhite")
-				.attr("transform","translate("+margin+","+(height+margin)+")")
-				.call(d3.axisBottom(xS).ticks(d3.timeYear).tickFormat(d3.timeFormat("%Y")))
-				.append("text") // text label for the x axis
-				.attr("x", width / 2 )
-				.attr("y", 0 + (margin - 20) / 2)
-				.attr("dy", "1em")
-				.style("text-anchor", "middle")
-				.text("Year");
+				svg.append("g")
+					.attr("class", "axisWhite")
+					.attr("transform","translate("+margin+","+margin+")")
+					.call(d3.axisLeft(yS)
+						.tickValues(chartTicks())
+						.tickFormat((d) => formatDollarValues(d))
+						)
+					.append("text")
+					.attr("transform", "rotate(-90)")
+					.attr("y",0- margin + 5)
+					.attr("x",0 - (height / 2))
+					.attr("dy", "1em")
+					.style("text-anchor", "middle")
+					.text("Asset Price (Log Scale)");
+			var bottomAxis = 
+				svg.append("g")
+					.attr("class", "axisWhite")
+					.attr("transform","translate("+margin+","+(height+margin)+")")
+					.call(d3.axisBottom(xS).ticks(d3.timeYear).tickFormat(d3.timeFormat("%Y")))
+					.append("text") // text label for the x axis
+					.attr("x", width / 2 )
+					.attr("y", 0 + (margin - 20) / 2)
+					.attr("dy", "1em")
+					.style("text-anchor", "middle")
+					.text("Year");
 			// highlight selected line and fade other lines
 			d3.select("#chart").selectAll("path")
 				.on("mouseover", function(){
@@ -218,7 +219,8 @@
 				.attr("dy", "1em")
 				.style("text-anchor", "middle")
 				.style("font-style", "italic")
-				.text("Hover over each path to highlight");
+				.style("font-size", "12px")
+				.text("Hover over path to highlight. Click annotation text for article.");
 			legend.selectAll("*")
 				.transition()
 				.delay(transitionLength)		
@@ -362,6 +364,23 @@
 				.attr("dy", "1em")
 				.style("text-anchor", "middle")
 				.text("Year");
+			var legend = svg
+				.append("g")
+				.attr("transform","translate("+margin+","+margin+")")
+				.attr("class", "legend");
+			legend.append("text")
+				.attr("x", width / 2 )
+				.attr("y", 0 + (margin) / 2)
+				.attr("dy", "1em")
+				.style("text-anchor", "middle")
+				.style("font-style", "italic")
+				.style("font-size", "12px")
+				.text("Click annotation text for article.");
+			legend.selectAll("*")
+				.transition()
+				.delay(transitionLength)		
+				.duration(3000)		
+				.style("opacity", 100);
 			// generate paragraphs for chart
 			d3.select("#chartOneText").append("p").html(wsbChartText)
 				.transition()
